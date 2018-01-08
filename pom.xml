@@ -21,6 +21,14 @@
 		<sourceDirectory>src/main/java</sourceDirectory>
 	</build>
 	
+	<distributionManagement>
+	    <snapshotRepository>
+	        <id>snapshots</id>
+	        <name>bruce-hart2-snapshots</name>
+	        <url>http://35.186.255.251/artifactory/libs-snapshot-local</url>
+	    </snapshotRepository>
+	</distributionManagement>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
