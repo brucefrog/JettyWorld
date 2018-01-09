@@ -9,6 +9,7 @@ node {
     }
     stage('Build') {
 		// Setup Artifactory resolution
+		rtMaven.tool = 'Maven3.5.2'
 		rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
 		buildInfo.env.capture = true
