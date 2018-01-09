@@ -35,6 +35,7 @@ public class Hello extends AbstractHandler {
 
 			resp.getWriter().println("<br/>");
 		}
+		resp.getWriter().println("<br/>");
 	}
 
 	public static void main(String[] args) throws Exception
