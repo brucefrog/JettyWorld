@@ -27,7 +27,6 @@ public class Hello extends AbstractHandler {
 		
 		resp.getWriter().println("<h2>Headers</h2>");
 		
-		@SuppressWarnings("unchecked")
 		Enumeration<String> hdrNames = req.getHeaderNames();
 		while (hdrNames.hasMoreElements()) {
 			String hdrName = hdrNames.nextElement();
