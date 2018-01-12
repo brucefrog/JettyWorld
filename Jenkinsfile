@@ -16,7 +16,7 @@ node {
     }
     stage('Publish jar') {
         rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
-		// rtMaven.tool = 'Maven3.5.2'
+		rtMaven.tool = 'Maven3.5.2'
 		// buildInfo = rtMaven.run pom: 'pom.xml', goals: 'install' 
 		rtMaven.deployer.deployArtifacts buildInfo
 		server.publishBuildInfo buildInfo
