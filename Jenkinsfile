@@ -19,7 +19,9 @@ node {
     }
     stage('Release') {
     		// sh 'docker build -t docker.artifactory.bruce/onboard/hello .'
-    		def docimg = docker.build('docker.artifactory.bruce/onboard/hello')
-    		docimg.push()
+    		docker.withRegistry('https://docker.artifactory.bruce','admin') {
+	    		def docimg = docker.build('onboard/hello')
+	    		docimg.push()
+    		}
     }
 }
