@@ -19,7 +19,7 @@ node {
     }
     stage('Package') {
     		// sh 'docker build -t docker.artifactory.bruce/onboard/hello .'
-    		docker.build('docker.artifactory.bruce/onboard/hello:${env.BUILD_ID}")
+    		docker.build('docker.artifactory.bruce/onboard/hello:${env.BUILD_ID}')
     }
     stage('Release') {
     		// sh 'docker push docker.artifactory.bruce/onboard/hello'
