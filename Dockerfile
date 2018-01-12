@@ -6,7 +6,7 @@ RUN groupadd -r jetson && useradd -r -g jetson jetson
 ENV APP_HOME /home/jetson
 
 RUN mkdir -p "$APP_HOME"
-ADD bin/*.jar "$APP_HOME"
+ADD bin/JettyWorld-0.1-SNAPSHOT.jar "$APP_HOME"
 
 RUN mkdir -p "$APP_HOME/depend"
 ADD bin/dependency/ "$APP_HOME/depend"
