@@ -7,7 +7,7 @@ node {
     		// Get some code from a GitHub repository
 		git 'https://github.com/brucefrog/JettyWorld'
     }
-    stage('Build jar') {
+    stage('Build') {
 		// Setup Artifactory resolution
 		rtMaven.tool = 'Maven3.5.2'
 		rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
