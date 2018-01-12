@@ -19,10 +19,10 @@ node {
     }
     stage('Package') {
     		// sh 'docker build -t docker.artifactory.bruce/onboard/hello .'
-    		docker.build('docker.artifactory.bruce/onboard/hello:${buildInfo.number}')
+    		docker.build('docker.artifactory.bruce/onboard/hello')
     }
     stage('Release') {
     		// sh 'docker push docker.artifactory.bruce/onboard/hello'
-    		docker.push('docker.artifactory.bruce/onboard/hello:${buildInfo.number}')
+    		docker.push('docker.artifactory.bruce/onboard/hello')
     }
 }
