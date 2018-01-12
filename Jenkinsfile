@@ -17,12 +17,9 @@ node {
 		rtMaven.deployer.deployArtifacts buildInfo
 		server.publishBuildInfo buildInfo
     }
-    stage('Package') {
-    		// sh 'docker build -t docker.artifactory.bruce/onboard/hello .'
-    		docker.build('docker.artifactory.bruce/onboard/hello')
-    }
     stage('Release') {
-    		// sh 'docker push docker.artifactory.bruce/onboard/hello'
-    		docker.push('docker.artifactory.bruce/onboard/hello')
+    		// sh 'docker build -t docker.artifactory.bruce/onboard/hello .'
+    		def docimg = docker.build('docker.artifactory.bruce/onboard/hello')
+    		docimg.push
     }
 }
