@@ -16,6 +16,6 @@ WORKDIR "$APP_HOME"
 USER jetson
 EXPOSE 6800
 
-RUN ls -R "$APP_HOME"
+RUN ls -lR "$APP_HOME"
 CMD ["java","-cp","JettyWorld-0.1-SNAPSHOT.jar:depend/*","com.jfrog.sample.Hello"]
 # CMD ["ls","-R"]
