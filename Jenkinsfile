@@ -18,8 +18,9 @@ node {
 		server.publishBuildInfo buildInfo
     }
     stage('Release') {
-    		sh 'printenv'
-    		 sh 'docker build -t docker.artifactory.bruce/onboard/hello .'
-    		 sh 'docker push docker.artifactory.bruce/onboard/hello'
+    		 // sh 'docker build -t docker.artifactory.bruce/onboard/hello .'
+    		 // sh 'docker push docker.artifactory.bruce/onboard/hello'
+			def dockerImage = docker.build('docker.artifactory.bruce/onboard/hello')
+			dockerImage.push()
     }
 }
