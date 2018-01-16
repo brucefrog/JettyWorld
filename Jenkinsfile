@@ -17,6 +17,11 @@ node {
 		rtMaven.deployer.deployArtifacts buildInfo
 		// server.publishBuildInfo buildInfo
     }
+    stage('Verify Jar') {
+    		def buildInfoJar = rtMaven.run pom: 'pom.xml', goals: 'exec:exec' {c ->
+    			sh 'curl "http://localhost:6800/"'
+    		}
+    }
     stage('Xray Scan') {
           def xrayConfig = [
             //Mandatory parameters
@@ -41,7 +46,7 @@ node {
 			server.publishBuildInfo(buildInfo)
 			dockerImage.push()
     }
-    stage('Verify') {
+    stage('Verify Docker Image') {
     		// server.pull(imageName)
     		docker.image(imageName).withRun('-p 6800:6800') {c ->
                 sleep 5
