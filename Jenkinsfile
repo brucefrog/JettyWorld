@@ -18,9 +18,7 @@ node {
 		// server.publishBuildInfo buildInfo
     }
     stage('Verify Jar') {
-    		def buildInfoJar = rtMaven.run pom: 'pom.xml', goals: 'exec:exec' {c ->
-    			sh 'curl "http://localhost:6800/"'
-    		}
+    		sh 'mvn exec:exec'
     }
     stage('Xray Scan') {
           def xrayConfig = [
