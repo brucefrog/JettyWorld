@@ -2,7 +2,7 @@ node {
     def server = Artifactory.server 'ART8080GCP'
 	def rtMaven = Artifactory.newMavenBuild()
 	def imageName = 'docker.artifactory.bruce/onboard/hello:' + env.BUILD_NUMBER
-	def artDocker = Artifactory.docker 'DOCKRHA'
+	def artDocker = Artifactory.docker credentialsId: 'DOCKRHA'
 	def buildInfo
 	
     stage('Checkout') {
