@@ -35,10 +35,10 @@ node {
 	def imageName = 'docker.artifactory.bruce/onboard/hello:' + env.BUILD_NUMBER
 	def artDocker= Artifactory.docker()
 	
-    stage('Publish Docker Image') {
+    stage('Docker Image') {
 			def dockerImage = docker.build(imageName)
-			server.publishBuildInfo(buildInfo)
 			dockerImage.push()
+			buildInfo.append dockerImage
     }
     stage('Xray Scan') {
           def xrayConfig = [
@@ -61,5 +61,8 @@ node {
                 sleep 5
                 sh 'curl "http://localhost:6800/"'
             }
+    }
+    stage('Publish Result') {
+		server.publishBuildInfo(buildInfo)
     }
 }
