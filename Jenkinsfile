@@ -36,8 +36,9 @@ node {
     
 	
     stage('Docker Image') {
-			def dockerImage = artDocker.build(imageName)
-			dockerImage.push()
+			def dockerImage = docker.build(imageName)
+			// dockerImage.push()
+			artDocker.push(dockerImage)
 			server.publishBuildInfo(buildInfo)
     }
     stage('Xray Scan') {
