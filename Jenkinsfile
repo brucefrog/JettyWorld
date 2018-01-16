@@ -35,7 +35,7 @@ node {
     stage('Release') {
     		 // sh 'docker build -t docker.artifactory.bruce/onboard/hello .'
     		 // sh 'docker push docker.artifactory.bruce/onboard/hello'
-    		 def tagName = docker.artifactory.bruce/onboard/hello:' + env.BUILD_NUMBER;
+    		 def tagName = docker.artifactory.bruce/onboard/hello:' + env.BUILD_NUMBER
 			def dockerImage = docker.build(tagName)
 			def artDocker= Artifactory.docker()
 			server.publishBuildInfo(buildInfo)
