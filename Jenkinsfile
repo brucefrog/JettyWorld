@@ -38,7 +38,7 @@ node {
     stage('Docker Image') {
 			def dockerImage = docker.build(imageName)
 			dockerImage.push()
-			// buildInfo.append dockerImage
+			server.publishBuildInfo(buildInfo)
     }
     stage('Xray Scan') {
           def xrayConfig = [
@@ -55,14 +55,11 @@ node {
           // Print full report from xray
           echo xrayResults as String
     }
-    stage('Verify Docker Image') {
+    stage('Verify Image') {
     		// server.pull(imageName)
     		docker.image(imageName).withRun('-p 6800:6800') {c ->
                 sleep 5
                 sh 'curl "http://localhost:6800/"'
             }
-    }
-    stage('Publish Result') {
-		server.publishBuildInfo(buildInfo)
     }
 }
