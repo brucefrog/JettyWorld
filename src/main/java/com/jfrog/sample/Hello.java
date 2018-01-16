@@ -14,15 +14,12 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 public class Hello extends AbstractHandler {
 
-	protected Server server;
-	
     public void handle(String target,
             Request baseRequest,
             HttpServletRequest req,
             HttpServletResponse resp) throws IOException, ServletException
 	{
     		if (target.equals("/shutdown")) {
-    			
     			doShutdown(baseRequest, resp);
     		}
     		
@@ -31,7 +28,6 @@ public class Hello extends AbstractHandler {
 		baseRequest.setHandled(true);
 		resp.getWriter().println("<h1>Hello World</h1>");
 		resp.getWriter().println("<br/>");
-		
 		
 		resp.getWriter().println("<h2>Headers</h2>");
 		
@@ -86,11 +82,10 @@ public class Hello extends AbstractHandler {
 		
 		Hello me = new Hello();
 		
-		me.server = new Server(6800);
-		me.server.setHandler(me);
+		Server server = new Server(6800);
+		server.setHandler(me);
 		
-		me.server.start();
-		me.server.join();
-//		me.server.stop();
+		server.start();
+		server.join();
 	}
 }
