@@ -19,7 +19,7 @@ node {
     }
     stage('Verify Jar') {
     		rtMaven.tool = 'Maven3.5.2'
-    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec' {c -?
+    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec' {c ->
     			sleep 5
     			sh 'curl "http://localhost:6800/"'
     		}
