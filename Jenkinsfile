@@ -32,13 +32,20 @@ node {
           // Print full report from xray
           echo xrayResults as String
     }
-    stage('Release') {
-    		 // sh 'docker build -t docker.artifactory.bruce/onboard/hello .'
-    		 // sh 'docker push docker.artifactory.bruce/onboard/hello'
-    		 def tagName = 'docker.artifactory.bruce/onboard/hello:' + env.BUILD_NUMBER
-			def dockerImage = docker.build(tagName)
-			def artDocker= Artifactory.docker()
-			server.publishBuildInfo(buildInfo)
-			dockerImage.push()
+    node{
+		def imageName = 'docker.artifactory.bruce/onboard/hello:' + env.BUILD_NUMBER
+		def artDocker= Artifactory.docker()
+	    stage('Publish') {
+				def dockerImage = docker.build(imageName)
+				server.publishBuildInfo(buildInfo)
+				dockerImage.push()
+	    }
+	    stage('Verify') {
+	    		artDocker.pull(imageName)
+	    		docker.image(imageName).withRun('-p 6800:6800') {c ->
+                    sleep 5
+                    sh 'curl "http://localhost:6800/"'
+                }
+	    }
     }
 }
