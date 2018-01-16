@@ -37,9 +37,9 @@ node {
 	
     stage('Docker Image') {
 			def dockerImage = docker.build(imageName)
-			// dockerImage.push()
-			def dockInfo = artDocker.push imageName, 'docker-local' 
-			buildInfo.append dockerInfo
+			dockerImage.push()
+			// def dockInfo = artDocker.push imageName, 'docker-local' 
+			// buildInfo.append dockerInfo
 			server.publishBuildInfo(buildInfo)
     }
     stage('Xray Scan') {
@@ -63,5 +63,6 @@ node {
                 sleep 5
                 sh 'curl "http://localhost:6800/"'
             }
+        docker.image("rm -f", imageName)
     }
 }
