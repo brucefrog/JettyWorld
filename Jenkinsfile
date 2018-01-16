@@ -19,7 +19,11 @@ node {
     }
     stage('Verify Jar') {
     		rtMaven.tool = 'Maven3.5.2'
-    		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'exec:exec' 
+    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec' {c -?
+    			sleep 5
+    			sh 'curl "http://localhost:6800/"'
+    		}
+    		buildInfo.append buildInfo2
     }
     stage('Xray Scan') {
           def xrayConfig = [
