@@ -38,7 +38,7 @@ node {
     stage('Docker Image') {
 			def dockerImage = docker.build(imageName)
 			dockerImage.push()
-			buildInfo.append dockerImage
+			// buildInfo.append dockerImage
     }
     stage('Xray Scan') {
           def xrayConfig = [
