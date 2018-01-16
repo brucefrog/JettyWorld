@@ -59,7 +59,7 @@ node {
     }
     stage('Verify Image') {
         sh 'docker rmi ' + imageName
-    		server.pull(imageName)
+    		docker.pull(imageName)
     		docker.image(imageName).withRun('-p 6800:6800') {c ->
                 sleep 5
                 sh 'curl "http://localhost:6800/"'
