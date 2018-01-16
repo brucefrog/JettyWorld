@@ -63,6 +63,6 @@ node {
                 sleep 5
                 sh 'curl "http://localhost:6800/"'
             }
-        docker.rmi imageName
+        sh 'docker rmi imageName'
     }
 }
