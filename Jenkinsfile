@@ -38,7 +38,7 @@ node {
             'buildNumber'       : env.BUILD_NUMBER,
 
             //Optional
-            'failBuild'        : false
+            'failBuild'        : true
           ]
 
           // Scan xray build
