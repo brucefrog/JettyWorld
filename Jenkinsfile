@@ -27,7 +27,8 @@ node {
     		},
     		apptest: {
     			sleep 5
-    			sh 'curl "http://localhost:6800/"'
+    			sh 'curl "http://localhost:6800/hello"'
+    			sh 'curl "http://localhost:6800/shutdown"'
     		}
     }
     stage('Xray Scan') {

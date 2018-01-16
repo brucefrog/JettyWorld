@@ -7,17 +7,25 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
 public class Hello extends AbstractHandler {
 
+	protected Server server;
+	
     public void handle(String target,
             Request baseRequest,
             HttpServletRequest req,
             HttpServletResponse resp) throws IOException, ServletException
 	{
+    		if (target.equals("/shutdown")) {
+    			
+    			doShutdown(baseRequest, resp);
+    		}
+    		
     		resp.setContentType("text/html;charset=utf-8");
     		resp.setStatus(HttpServletResponse.SC_OK);
 		baseRequest.setHandled(true);
@@ -36,13 +44,53 @@ public class Hello extends AbstractHandler {
 		}
 		resp.getWriter().println("<br/>");
 	}
+    
+    protected void doShutdown(Request baseRequest, HttpServletResponse response) throws IOException 
+    {
+        for (Connector connector : getServer().getConnectors()) 
+        {
+            connector.shutdown();
+        }
+
+        response.sendError(200, "Connectors closed, commencing full shutdown");
+        baseRequest.setHandled(true);
+
+        final Server server=getServer();
+        new Thread()
+        {
+            @Override
+            public void run ()
+            {
+                try
+                {
+                    shutdownServer(server);
+                }
+                catch (Exception e)
+                {
+                    throw new RuntimeException("Shutting down server",e);
+                }
+            }
+        }.start();
+    }
+    
+    private void shutdownServer(Server server) throws Exception
+    {
+        server.stop();
+
+        System.exit(0);
+    }
+
 
 	public static void main(String[] args) throws Exception
 	{
-		Server server = new Server(6800);
-		server.setHandler(new Hello());
 		
-		server.start();
-		server.join();
+		Hello me = new Hello();
+		
+		me.server = new Server(6800);
+		me.server.setHandler(me);
+		
+		me.server.start();
+		me.server.join();
+//		me.server.stop();
 	}
 }
