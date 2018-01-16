@@ -18,7 +18,9 @@ node {
 		// server.publishBuildInfo buildInfo
     }
     stage('Verify Jar') {
-    		sh 'mvn exec:exec'
+    		sh 'mvn exec:exec' {c ->
+    			sh 'curl "http://localhost:6800/"'
+    		}
     }
     stage('Xray Scan') {
           def xrayConfig = [
