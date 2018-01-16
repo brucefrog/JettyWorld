@@ -18,7 +18,7 @@ node {
 		// server.publishBuildInfo buildInfo
     }
     stage('Verify Jar') {
-    		sh 'mvn exec:exec' {c ->
+    		sh 'mvn "exec:exec"' {c ->
     			sh 'curl "http://localhost:6800/"'
     		}
     }
