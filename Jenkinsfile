@@ -39,7 +39,7 @@ node {
     stage('Docker Image') {
 			def dockerImage = docker.build(imageName)
 			// dockerImage.push()
-			def dockInfo = artDocker.push 'https://' + imageName, 'docker' 
+			def dockInfo = artDocker.push imageName 
 			buildInfo.append dockerInfo
 			server.publishBuildInfo(buildInfo)
     }
