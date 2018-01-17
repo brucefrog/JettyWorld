@@ -85,6 +85,6 @@ node {
 		]
 		 
 		// Promote build
-		// server.promote promotionConfig    
+		server.promote promotionConfig    
     }
 }
