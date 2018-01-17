@@ -2,7 +2,7 @@ node {
     def server = Artifactory.server 'ART8080GCP'
 	def rtMaven = Artifactory.newMavenBuild()
 	def imageName = 'docker.artifactory.bruce/onboard/hello:' + env.BUILD_NUMBER
-	def artDocker = Artifactory.docker()
+	def artDocker = Artifactory.docker server: server
 	def buildInfo
 	
     stage('Checkout') {
@@ -16,6 +16,7 @@ node {
         rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
 		buildInfo.env.capture = true
+		buildInfo.retention maxBuilds: 10
 		rtMaven.deployer.deployArtifacts buildInfo
 		// server.publishBuildInfo buildInfo
     }
