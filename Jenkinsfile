@@ -24,7 +24,7 @@ node {
     		parallel apprun: {
     			timeout(time: 10, unit: 'SECONDS') {
 		    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec'
-		    		buildInfo.append buildInfo2
+		    		// buildInfo.append buildInfo2
 	    		}
     		},
     		apptest: {
