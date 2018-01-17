@@ -81,7 +81,7 @@ node {
 		    'copy'               : true,
 		    'properties'         : {
 		    	     "Jar validated" : "true"
-		    }
+		    },
 		    // 'failFast' is true by default.
 		    // Set it to false, if you don't want the promotion to abort upon receiving the first error.
 		    'failFast'           : false
