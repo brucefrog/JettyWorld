@@ -1,8 +1,8 @@
 node {
     def server = Artifactory.server 'ART8080GCP'
 	def rtMaven = Artifactory.newMavenBuild()
-	def imageName = 'docker.artifactory.bruce/onboard/hello:' + env.BUILD_NUMBER
 	def artDocker = Artifactory.docker server: server
+	def imageName = 'docker.artifactory.bruce/onboard/hello:' + env.BUILD_NUMBER
 	def buildInfo
 	
     stage('Checkout') {
@@ -38,9 +38,9 @@ node {
 	
     stage('Docker Image') {
 			def dockerImage = docker.build(imageName)
-			dockerImage.push()
-			// def dockInfo = artDocker.push imageName, 'docker-local' 
-			// buildInfo.append dockerInfo
+			// dockerImage.push()
+			def dockInfo = artDocker.push imageName, 'docker-local' 
+			buildInfo.append dockerInfo
 			server.publishBuildInfo(buildInfo)
     }
     stage('Xray Scan') {
@@ -74,7 +74,7 @@ node {
 		    'targetRepo'         : 'libs-release-local',
 		 
 		    // Optional parameters
-		    'comment'            : 'this is the promotion comment',
+		    'comment'            : 'Promoting successfully tested jar and docker image',
 		    'sourceRepo'         : 'libs-snapshot-local',
 		    'status'             : 'Released',
 		    'includeDependencies': true,
@@ -85,6 +85,6 @@ node {
 		]
 		 
 		// Promote build
-		server.promote promotionConfig    
+		// server.promote promotionConfig    
     }
 }
