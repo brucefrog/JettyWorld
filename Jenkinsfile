@@ -67,6 +67,8 @@ node {
             }
     }
     stage('Promote') {
+    		buildInfo.env.filter.addInclude("*.jar")
+    		buildInfo.env.filter.addExclude("docker*");
 		def promotionConfig = [
 		    // Mandatory parameters
 		    'buildName'          : buildInfo.name,
