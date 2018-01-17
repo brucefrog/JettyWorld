@@ -6,7 +6,7 @@ RUN groupadd -r jetson && useradd -r -g jetson jetson
 ENV APP_HOME /home/jetson
 
 RUN mkdir -p "$APP_HOME"
-ADD --chown=jetson bin/JettyWorld-0.1-SNAPSHOT.jar "$APP_HOME"
+ADD --chown=jetson bin/JettyWorld-1.0-SNAPSHOT.jar "$APP_HOME/JettyWorld-1.0.jar"
 
 RUN mkdir -p "$APP_HOME/depend"
 ADD --chown=jetson bin/dependency/ "$APP_HOME/depend"
@@ -18,5 +18,5 @@ EXPOSE 6800
 
 RUN ls -lR "$APP_HOME"
 
-CMD ["java","-cp","JettyWorld-0.1-SNAPSHOT.jar:depend/*","com.jfrog.sample.Hello"]
+CMD ["java","-cp","JettyWorld-1.0.jar:depend/*","com.jfrog.sample.Hello"]
 # CMD ["ls","-R"]
