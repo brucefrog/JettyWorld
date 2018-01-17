@@ -60,11 +60,12 @@ node {
     }
     stage('Verify Image') {
         sh 'docker rmi ' + imageName
-    		// docker.pull(imageName)
+
     		docker.image(imageName).withRun('-p 6800:6800') {c ->
                 sleep 5
                 sh 'curl "http://localhost:6800/"'
-            }
+        }
+        sh 'docker rmi ' + imageName
     }
     stage('Promote') {
 		def promotionConfig = [
