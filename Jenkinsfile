@@ -39,7 +39,7 @@ node {
     stage('Docker Image') {
 			def dockerImage = docker.build(imageName)
 			// dockerImage.push()
-			def dockInfo = artDocker.push imageName, 'docker' 
+			def dockInfo = artDocker.push imageName, 'docker', buildInfo 
 			// buildInfo.append dockerInfo
 			server.publishBuildInfo(buildInfo)
     }
@@ -79,6 +79,9 @@ node {
 		    'status'             : 'Released',
 		    'includeDependencies': true,
 		    'copy'               : true,
+		    'properties'         : {
+		    	     "Jar validated" : "true"
+		    }
 		    // 'failFast' is true by default.
 		    // Set it to false, if you don't want the promotion to abort upon receiving the first error.
 		    'failFast'           : false
