@@ -21,24 +21,24 @@ public class Hello extends AbstractHandler {
 	{
     		if (target.equals("/shutdown")) {
     			doShutdown(baseRequest, resp);
-    		}
-    		
-    		resp.setContentType("text/html;charset=utf-8");
-    		resp.setStatus(HttpServletResponse.SC_OK);
-		baseRequest.setHandled(true);
-		resp.getWriter().println("<h1>Hello World</h1>");
-		resp.getWriter().println("<br/>");
-		
-		resp.getWriter().println("<h2>Headers</h2>");
-		
-		Enumeration<String> hdrNames = req.getHeaderNames();
-		while (hdrNames.hasMoreElements()) {
-			String hdrName = hdrNames.nextElement();
-			resp.getWriter().println(hdrName + ": " + req.getHeader(hdrName));
-
+    		} else {
+	    		resp.setContentType("text/html;charset=utf-8");
+	    		resp.setStatus(HttpServletResponse.SC_OK);
+			baseRequest.setHandled(true);
+			resp.getWriter().println("<h1>Hello World</h1>");
+			resp.getWriter().println("<br/>");
+			
+			resp.getWriter().println("<h2>Headers</h2>");
+			
+			Enumeration<String> hdrNames = req.getHeaderNames();
+			while (hdrNames.hasMoreElements()) {
+				String hdrName = hdrNames.nextElement();
+				resp.getWriter().println(hdrName + ": " + req.getHeader(hdrName));
+	
+				resp.getWriter().println("<br/>");
+			}
 			resp.getWriter().println("<br/>");
 		}
-		resp.getWriter().println("<br/>");
 	}
     
     protected void doShutdown(Request baseRequest, HttpServletResponse response) throws IOException 
