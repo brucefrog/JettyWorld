@@ -65,4 +65,25 @@ node {
                 sh 'curl "http://localhost:6800/"'
             }
     }
+    stage('Promote') {
+		def promotionConfig = [
+		    // Mandatory parameters
+		    'buildName'          : buildInfo.name,
+		    'buildNumber'        : buildInfo.number,
+		    'targetRepo'         : 'libs-release-local',
+		 
+		    // Optional parameters
+		    'comment'            : 'this is the promotion comment',
+		    'sourceRepo'         : 'libs-snapshot-local',
+		    'status'             : 'Released',
+		    'includeDependencies': true,
+		    'copy'               : true,
+		    // 'failFast' is true by default.
+		    // Set it to false, if you don't want the promotion to abort upon receiving the first error.
+		    'failFast'           : true
+		]
+		 
+		// Promote build
+		server.promote promotionConfig    
+    }
 }
