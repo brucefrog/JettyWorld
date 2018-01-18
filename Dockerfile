@@ -1,4 +1,4 @@
-FROM openjdk:8-jre
+FROM java:oracle-java8
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r jetson && useradd -r -g jetson jetson
