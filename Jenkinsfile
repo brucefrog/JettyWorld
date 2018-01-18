@@ -64,6 +64,7 @@ node {
           echo xrayResults as String
     }
     stage('Verify Image') {
+        sh 'docker rmi ' + image
         sh 'docker rmi ' + buildImage
 
     		docker.image(buildImage).withRun('-p 6800:6800') {c ->
