@@ -1,7 +1,9 @@
 FROM openjdk:8-jre-alpine
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+# ### Debian base for openjdk:8-jre
 # RUN groupadd -r jetson && useradd -r -g jetson jetson
+# ### Alpine base for openjdk:8-jre-alpine
 RUN addgroup -S jetson && adduser -S -g jetson jetson
 
 ENV APP_HOME /home/jetson

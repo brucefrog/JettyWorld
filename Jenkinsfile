@@ -2,7 +2,8 @@ node {
     def server = Artifactory.server 'ART8080GCP'
 	def rtMaven = Artifactory.newMavenBuild()
 	def artDocker = Artifactory.docker server: server, host: "tcp://localhost:1234"
-	def imageName = 'docker.artifactory.bruce/onboard/hello:' + env.BUILD_NUMBER
+	def image = 'docker.artifactory.bruce/onboard/hello'
+	def buildImage = image + ":" + env.BUILD_NUMBER
 	def buildInfo
 	
     stage('Checkout') {
@@ -38,9 +39,10 @@ node {
 	
     stage('Docker Image') {
     		sh 'printenv'
-		def dockerImage = docker.build(imageName)
+		def dockerImage = docker.build(buildImage)
 		// dockerImage.push()
-		def dockInfo = artDocker.push imageName, 'docker', buildInfo 
+		def dockInfo = artDocker.push buildImage, 'docker', buildInfo 
+		artDocker.push image+":latest", 'docker'
 		// buildInfo.append dockerInfo
 		server.publishBuildInfo(buildInfo)
     }
@@ -60,13 +62,13 @@ node {
           echo xrayResults as String
     }
     stage('Verify Image') {
-        sh 'docker rmi ' + imageName
+        sh 'docker rmi ' + buildImage
 
-    		docker.image(imageName).withRun('-p 6800:6800') {c ->
+    		docker.image(buildImage).withRun('-p 6800:6800') {c ->
                 sleep 5
                 sh 'curl "http://localhost:6800/"'
         }
-        sh 'docker rmi ' + imageName
+        sh 'docker rmi ' + buildImage
     }
     stage('Promote') {
 		def promotionConfig = [
