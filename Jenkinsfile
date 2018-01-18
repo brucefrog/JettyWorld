@@ -39,6 +39,8 @@ node {
 	
     stage('Docker Image') {
     		sh 'printenv'
+    		sh 'echo ' + buildInfo.buildDependencies
+    		sh 'echo ' + buildInfo.DeployedArtifacts
 		def dockerImage = docker.build(buildImage)
 		dockerImage.tag("latest")
 		// dockerImage.push()
@@ -55,7 +57,7 @@ node {
             'buildNumber'       : env.BUILD_NUMBER,
 
             //Optional
-            'failBuild'        : false
+            'failBuild'        : true
           ]
 
           // Scan xray build
