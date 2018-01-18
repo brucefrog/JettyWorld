@@ -39,8 +39,8 @@ node {
 	
     stage('Docker Image') {
     		sh 'printenv'
-    		sh 'echo ' + buildInfo.buildDependencies
-    		sh 'echo ' + buildInfo.DeployedArtifacts
+    		// sh 'echo ' + buildInfo.buildDependencies
+    		// sh 'echo ' + buildInfo.DeployedArtifacts
 		def dockerImage = docker.build(buildImage)
 		dockerImage.tag("latest")
 		// dockerImage.push()
