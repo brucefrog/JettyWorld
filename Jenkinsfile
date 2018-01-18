@@ -42,6 +42,7 @@ node {
 		def dockerImage = docker.build(buildImage)
 		// dockerImage.push()
 		def dockInfo = artDocker.push buildImage, 'docker', buildInfo 
+		// dockerImage.push("latest")
 		artDocker.push image+":latest", 'docker'
 		// buildInfo.append dockerInfo
 		server.publishBuildInfo(buildInfo)
