@@ -22,9 +22,9 @@ USER jetson
 EXPOSE 6800
 
 # uncomment for debugging
-# RUN ls -lR "$APP_HOME"
+RUN ls -lR "$APP_HOME"
 
 ENV MAIN_CLASS=com.jfrog.sample.Hello
 
-CMD ["java","-cp","$APP_JAR:depend/*","$MAIN_CLASS"]
-# CMD ["ls","-R"]
+CMD ["sh","-c","java -cp ${APP_JAR}:depend/* ${MAIN_CLASS}"]
+# CMD ["java","-cp","main.jar:depend/*","com.jfrog.sample.Hello"]
