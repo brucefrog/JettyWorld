@@ -24,8 +24,7 @@ EXPOSE 6800
 # uncomment for debugging
 # RUN ls -lR "$APP_HOME"
 
-ENV
+ENV MAIN_CLASS=com.jfrog.sample.Hello
 
-
-CMD ["java","-cp","$APP_JAR:depend/*","com.jfrog.sample.Hello"]
+CMD ["java","-cp","$APP_JAR:depend/*","$MAIN_CLASS"]
 # CMD ["ls","-R"]
