@@ -40,6 +40,7 @@ node {
     stage('Docker Image') {
     		sh 'printenv'
 		def dockerImage = docker.build(buildImage)
+		dockerImage.tag("latest")
 		// dockerImage.push()
 		def dockInfo = artDocker.push buildImage, 'docker', buildInfo 
 		// dockerImage.push("latest")
