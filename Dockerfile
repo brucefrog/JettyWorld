@@ -24,7 +24,8 @@ EXPOSE 6800
 # uncomment for debugging
 RUN ls -lR "$APP_HOME"
 
+ENV CLASSPATH="${APP_JAR}:depend/*"
 ENV MAIN_CLASS=com.jfrog.sample.Hello
 
-CMD ["sh","-c","java -cp ${APP_JAR}:depend/* ${MAIN_CLASS}"]
+CMD ["sh","-c","java -cp ${CLASSPATH} ${MAIN_CLASS}"]
 #  CMD ["java","-cp","main.jar:depend/*","com.jfrog.sample.Hello"]
