@@ -14,7 +14,18 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 public class Hello extends AbstractHandler {
 
-    public void handle(String target,
+	public static void main(String[] args) throws Exception
+	{
+		Hello me = new Hello();
+		
+		Server server = new Server(6800);
+		server.setHandler(me);
+		
+		server.start();
+		server.join();
+	}
+
+	public void handle(String target,
             Request baseRequest,
             HttpServletRequest req,
             HttpServletResponse resp) throws IOException, ServletException
@@ -77,15 +88,4 @@ public class Hello extends AbstractHandler {
     }
 
 
-	public static void main(String[] args) throws Exception
-	{
-		
-		Hello me = new Hello();
-		
-		Server server = new Server(6800);
-		server.setHandler(me);
-		
-		server.start();
-		server.join();
-	}
 }
