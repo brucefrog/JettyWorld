@@ -1,7 +1,7 @@
 node {
     def server = Artifactory.server 'ART8080GCP'
 	def rtMaven = Artifactory.newMavenBuild()
-	def artDocker = Artifactory.docker server: server, host: "tcp://localhost:1234"
+	def artDocker = Artifactory.docker server: server, host: "tcp://localhost:2375"
 	def image = 'docker.artifactory.bruce/onboard/hello'
 	def buildImage = image + ":" + env.BUILD_NUMBER
 	def buildInfo
