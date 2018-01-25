@@ -15,6 +15,7 @@ node {
 		rtMaven.tool = 'Maven3.5.2'
 		rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
         rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
+        rtMaven.deployer.addProperty("MyProp","Hello")
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
 		buildInfo.env.capture = true
 		buildInfo.retention maxBuilds: 10
@@ -35,8 +36,8 @@ node {
     }
     stage('Xray Scan') {
 		rtMaven.tool = 'Maven3.5.2'
-        rtMaven.deployer.addProperty("JarVerify","Passed")
 		rtMaven.deployer.deployArtifacts buildInfo
+        rtMaven.deployer.addProperty("JarVerify","Passed")
 		server.publishBuildInfo buildInfo
 		
           def xrayConfig = [
