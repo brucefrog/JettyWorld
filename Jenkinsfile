@@ -25,7 +25,7 @@ node {
     			timeout(time: 10, unit: 'SECONDS') {
         			rtMaven.deployer.addProperty("JarVerify","Passed")
 		    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec'
-		    		buildInfo.append buildInfo2
+		    		// buildInfo.append buildInfo2
 	    		}
     		},
     		apptest: {
