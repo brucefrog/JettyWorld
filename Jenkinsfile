@@ -35,7 +35,7 @@ node {
     		}
     }
     stage('Xray Scan') {
-        rtMaven.deployer.addProperty("Testing","Passed")
+        buildInfo.addProperty("Testing","Passed")
 		server.publishBuildInfo buildInfo
           def xrayConfig = [
             //Mandatory parameters
