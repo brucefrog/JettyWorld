@@ -19,7 +19,6 @@ node {
 		buildInfo.env.capture = true
 		buildInfo.retention maxBuilds: 10
 		rtMaven.deployer.deployArtifacts buildInfo
-		server.publishBuildInfo buildInfo
     }
     stage('Verify Jar') {
     		rtMaven.tool = 'Maven3.5.2'
@@ -36,6 +35,8 @@ node {
     		}
     }
     stage('Xray Scan') {
+        rtMaven.deployer.addProperty("Testing","Passed")
+		server.publishBuildInfo buildInfo
           def xrayConfig = [
             //Mandatory parameters
             'buildName'         : env.JOB_NAME,
@@ -58,7 +59,7 @@ node {
 		    'targetRepo'         : 'libs-release-local',
 		 
 		    // Optional parameters
-		    'comment'            : 'Promoting successfully tested jar and docker image',
+		    'comment'            : 'Promoting successfully tested jar ',
 		    'sourceRepo'         : 'libs-snapshot-local',
 		    'status'             : 'Released',
 		    'includeDependencies': true,
