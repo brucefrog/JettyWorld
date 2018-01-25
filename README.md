@@ -8,4 +8,11 @@ CI/CD Pipeline
 -----------------------------------
 Code commit to Github automatically builds upon webhook triggering Jenkins.  
 
-
+Eclipse -> Github -> Jenkins -> Artifactory -> Xray 
+                       |             ^ ^
+                       |             | |
+                       |-> JavaHello | |
+                       |               |
+                       |               |
+                       |-> DockerHello |
+                       
