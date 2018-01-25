@@ -17,7 +17,7 @@ node {
         rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
 		buildInfo.env.capture = true
-		buildInfo.retention maxBuilds: 10
+		buildInfo.retention maxBuilds: 5
 		rtMaven.deployer.deployArtifacts buildInfo
 		server.publishBuildInfo buildInfo
     }
