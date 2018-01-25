@@ -23,8 +23,9 @@ node {
     		rtMaven.tool = 'Maven3.5.2'
     		parallel apprun: {
     			timeout(time: 10, unit: 'SECONDS') {
+        			rtMaven.deployer.addProperty("JarVerify","Passed")
 		    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec'
-		    		// buildInfo.append buildInfo2
+		    		buildInfo.append buildInfo2
 	    		}
     		},
     		apptest: {
@@ -36,7 +37,6 @@ node {
     stage('Xray Scan') {
 		rtMaven.tool = 'Maven3.5.2'
 		rtMaven.deployer.deployArtifacts buildInfo
-        rtMaven.deployer.addProperty("JarVerify","Passed")
 		server.publishBuildInfo buildInfo
 		
           def xrayConfig = [
