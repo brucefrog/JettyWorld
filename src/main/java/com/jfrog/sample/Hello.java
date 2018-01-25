@@ -83,7 +83,6 @@ public class Hello extends AbstractHandler {
     private void shutdownServer(Server server) throws Exception
     {
         server.stop();
-
         System.exit(0);
     }
 
