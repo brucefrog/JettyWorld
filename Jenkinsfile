@@ -24,7 +24,7 @@ node {
     		rtMaven.tool = 'Maven3.5.2'
     		parallel apprun: {
     			timeout(time: 10, unit: 'SECONDS') {
-		        rtMaven.deployer.addProperty("MyProp","Hello...")
+		        rtMaven.deployer.addProperty("MyProp2","Hello...")
 		    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec'
 		    		buildInfo.append buildInfo2
 	    		}
