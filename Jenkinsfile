@@ -18,7 +18,6 @@ node {
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
 		buildInfo.env.capture = true
 		buildInfo.retention maxBuilds: 10
-		rtMaven.deployer.deployArtifacts buildInfo
     }
     stage('Verify Jar') {
     		rtMaven.tool = 'Maven3.5.2'
@@ -35,7 +34,9 @@ node {
     		}
     }
     stage('Xray Scan') {
-        buildInfo.addProperty("Testing","Passed")
+		rtMaven.tool = 'Maven3.5.2'
+        rtMaven.deployer.addProperty("JarVerify","Passed")
+		rtMaven.deployer.deployArtifacts buildInfo
 		server.publishBuildInfo buildInfo
           def xrayConfig = [
             //Mandatory parameters
