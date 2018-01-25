@@ -35,7 +35,6 @@ node {
     			sh 'curl "http://localhost:6800/shutdown"'
     		}
     }
-    
 	
     stage('Docker Image') {
     		sh 'printenv'
