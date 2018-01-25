@@ -35,6 +35,20 @@ node {
     			sh 'curl "http://localhost:6800/shutdown"'
     		}
     }
+	
+    stage('Docker Image') {
+    		sh 'printenv'
+    		// sh 'echo ' + buildInfo.buildDependencies
+    		// sh 'echo ' + buildInfo.DeployedArtifacts
+		def dockerImage = docker.build(buildImage)
+		dockerImage.tag("latest")
+		// dockerImage.push()
+		def dockInfo = artDocker.push buildImage, 'docker', buildInfo 
+		// dockerImage.push("latest")
+		artDocker.push image+":latest", 'docker'
+		// buildInfo.append dockerInfo
+		server.publishBuildInfo(buildInfo)
+    }
     stage('Xray Scan') {
           def xrayConfig = [
             //Mandatory parameters
@@ -49,6 +63,16 @@ node {
           def xrayResults = server.xrayScan xrayConfig
           // Print full report from xray
           echo xrayResults as String
+    }
+    stage('Verify Image') {
+        sh 'docker rmi ' + image
+        sh 'docker rmi ' + buildImage
+
+    		docker.image(buildImage).withRun('-p 6800:6800') {c ->
+                sleep 5
+                sh 'curl "http://localhost:6800/"'
+        }
+        sh 'docker rmi ' + buildImage
     }
     stage('Promote') {
 		def promotionConfig = [
