@@ -35,9 +35,10 @@ node {
     }
     stage('Xray Scan') {
 		rtMaven.tool = 'Maven3.5.2'
-        rtMaven.deployer.addProperty("JarVerify","Passed")
 		rtMaven.deployer.deployArtifacts buildInfo
+        rtMaven.deployer.addProperty("JarVerify","Passed")
 		server.publishBuildInfo buildInfo
+		
           def xrayConfig = [
             //Mandatory parameters
             'buildName'         : env.JOB_NAME,
