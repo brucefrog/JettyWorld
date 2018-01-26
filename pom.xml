@@ -4,13 +4,13 @@
 	
 	<groupId>bruce.jfrog</groupId>
 	<artifactId>JettyWorld</artifactId>
-	<version>1.6-SNAPSHOT</version>
+	<version>1.6</version>
 		
 	<scm>
 		<connection>scm:git:git@github.com:brucefrog/JettyWorld.git</connection>
 		<url>scm:git:git@github.com:brucefrog/JettyWorld.git</url>
 		<developerConnection>scm:git:git@github.com:brucefrog/JettyWorld.git</developerConnection>
-	  	<tag>JettyWorld-1.5</tag>
+	  	<tag>JettyWorld-1.6</tag>
     </scm>
 	<build>
 		<directory>bin</directory>
