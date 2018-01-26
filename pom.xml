@@ -10,7 +10,7 @@
 		<connection>scm:git:git@github.com:brucefrog/JettyWorld.git</connection>
 		<url>scm:git:git@github.com:brucefrog/JettyWorld.git</url>
 		<developerConnection>scm:git:git@github.com:brucefrog/JettyWorld.git</developerConnection>
-	  	<tag>JettyWorld-1.2</tag>
+	  	<tag>JettyWorld-1.5</tag>
     </scm>
 	<build>
 		<directory>bin</directory>
