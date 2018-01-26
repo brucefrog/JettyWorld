@@ -4,7 +4,7 @@
 	
 	<groupId>bruce.jfrog</groupId>
 	<artifactId>JettyWorld</artifactId>
-	<version>1.2-SNAPSHOT</version>
+	<version>1.2</version>
 		
 	<scm>
 		<connection>scm:git:git@github.com:brucefrog/JettyWorld.git</connection>
