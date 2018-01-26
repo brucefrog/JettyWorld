@@ -11,7 +11,7 @@
 	<scm>
 		<url>https://github.com/brucefrog/JettyWorld</url>
 		<developerConnection>brucefrog</developerConnection>
-	</scm>
+	</scm> 
 	
 	<build>
 		<directory>bin</directory>
