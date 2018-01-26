@@ -60,8 +60,10 @@ node {
     }
     stage('Promote') {
     		def descriptor = Artifactory.mavenDescriptor()
+    		descriptor.pomFile = 'pom.xml'
 		descriptor.version = '1.1.0'
 		descriptor.transform()
+		
 		def promotionConfig = [
 		    // Mandatory parameters
 		    'buildName'          : buildInfo.name,
