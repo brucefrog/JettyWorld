@@ -12,7 +12,6 @@
 		<developerConnection>scm:git:git@github.com:brucefrog/JettyWorld.git</developerConnection>
 	  	<tag>JettyWorld-1.2</tag>
     </scm>
-  
 	<build>
 		<directory>bin</directory>
 		<outputDirectory>bin/classes</outputDirectory>
@@ -72,12 +71,22 @@
 
    	</build>
 
+	 <profiles>
+	    <profile>
+	        <id>JettyWorld</id>
+	    </profile>
+	</profiles> 
 	<distributionManagement>
 	    <snapshotRepository>
 	        <id>snapshots</id>
-	        <name>bruce-hart2-snapshots</name>
+	        <name>Bruce Onboarding Snapshots</name>
 	        <url>http://35.186.255.251/artifactory/libs-snapshot-local</url>
 	    </snapshotRepository>
+	    <repository>
+	        <id>central</id>
+	        <name>Bruce Onboarding Release</name>
+	        <url>http://35.186.255.251/artifactory/libs-release-local</url>
+	    </repository>
 	</distributionManagement>
 	
 	<dependencies>
