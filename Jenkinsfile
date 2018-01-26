@@ -59,6 +59,9 @@ node {
           echo xrayResults as String
     }
     stage('Promote') {
+    		def descriptor = Artifactory.mavenDescriptor()
+		descriptor.version = '1.1.0'
+		descriptor.transform()
 		def promotionConfig = [
 		    // Mandatory parameters
 		    'buildName'          : buildInfo.name,
