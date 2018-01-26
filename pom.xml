@@ -11,8 +11,8 @@
 		<url>scm:git:git@github.com:brucefrog/JettyWorld.git</url>
 		<developerConnection>scm:git:git@github.com:brucefrog/JettyWorld.git</developerConnection>
 	  	<tag>JettyWorld-1.1</tag>
-  </scm> 
-	
+    </scm>
+  
 	<build>
 		<directory>bin</directory>
 		<outputDirectory>bin/classes</outputDirectory>
