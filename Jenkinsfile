@@ -30,7 +30,7 @@ node {
 	    		}
     		},
     		apptest: {
-    			sleep 5
+    			sleep 10
     			sh 'curl "http://localhost:6800/hello"'
     			sh 'curl "http://localhost:6800/shutdown"'
     		}
