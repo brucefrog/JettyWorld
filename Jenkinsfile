@@ -37,6 +37,7 @@ node {
     }
     stage('Xray Scan') {
 		rtMaven.tool = 'Maven3.5.2'
+		rtMaven.deployer.artifactDeploymentPatterns.addExclude("*.pom")
 		def buildInfo3 = rtMaven.run pom: 'pom.xml', goals: 'install' 
 		buildInfo.append buildInfo3
         rtMaven.deployer.addProperty("JarVerify","Passed")
