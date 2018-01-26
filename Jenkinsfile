@@ -59,10 +59,8 @@ node {
           echo xrayResults as String
     }
     stage('Promote') {
-    		def descriptor = Artifactory.mavenDescriptor()
-    		descriptor.pomFile = 'pom.xml'
-		descriptor.version = '1.1.0'
-		descriptor.transform()
+		rtMaven.tool = 'Maven3.5.2'
+		def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:clean release:prepare release:perform' 
 		
 		def promotionConfig = [
 		    // Mandatory parameters

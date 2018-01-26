@@ -84,7 +84,7 @@
 	    </snapshotRepository>
 	    <repository>
 	        <id>central</id>
-	        <name>Bruce Onboarding Release</name>
+	        <name>bruce-hart2-releases</name>
 	        <url>http://35.186.255.251/artifactory/libs-release-local</url>
 	    </repository>
 	</distributionManagement>
