@@ -62,8 +62,7 @@ node {
 		rtMaven.tool = 'Maven3.5.2'
         rtMaven.deployer.addProperty("Release","promoted")
 		def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:clean release:prepare release:perform' 
-		buildInfo.append buildInfo4
-		server.publishBuildInfo buildInfo
+		server.publishBuildInfo buildInfo4
 		
 		def promotionConfig = [
 		    // Mandatory parameters
