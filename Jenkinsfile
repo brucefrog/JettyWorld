@@ -42,7 +42,6 @@ node {
 		buildInfo.append buildInfo3
         rtMaven.deployer.addProperty("JarVerify","Passed")
 		rtMaven.deployer.deployArtifacts buildInfo
-		server.publishBuildInfo buildInfo
 		
           def xrayConfig = [
             //Mandatory parameters
@@ -60,7 +59,10 @@ node {
     }
     stage('Promote') {
 		rtMaven.tool = 'Maven3.5.2'
+        rtMaven.deployer.addProperty("Release","promoted")
 		def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:clean release:prepare release:perform' 
+		buildInfo.append buildInfo4
+		server.publishBuildInfo buildInfo
 		
 		def promotionConfig = [
 		    // Mandatory parameters
