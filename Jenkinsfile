@@ -42,6 +42,7 @@ node {
 		buildInfo.append buildInfo3
         rtMaven.deployer.addProperty("JarVerify","Passed")
 		rtMaven.deployer.deployArtifacts buildInfo
+		server.publishBuildInfo buildInfo
 		
           def xrayConfig = [
             //Mandatory parameters
