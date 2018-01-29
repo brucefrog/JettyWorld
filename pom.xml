@@ -5,7 +5,8 @@
 	<groupId>bruce.jfrog</groupId>
 	<artifactId>JettyWorld</artifactId>
 	<version>1.20-SNAPSHOT</version>
-		
+	<packaging>pom</packaging>
+
 	<scm>
 		<connection>scm:git:git@github.com:brucefrog/JettyWorld.git</connection>
 		<url>scm:git:git@github.com:brucefrog/JettyWorld.git</url>
