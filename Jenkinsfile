@@ -58,30 +58,5 @@ node {
           // Print full report from xray
           echo xrayResults as String
     }
-    stage('Promote') {
-		rtMaven.tool = 'Maven3.5.2'
-        rtMaven.deployer.addProperty("Release","promoted")
-		def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:clean release:prepare release:perform' 
-//		server.publishBuildInfo buildInfo4
-		
-		def promotionConfig = [
-		    // Mandatory parameters
-		    'buildName'          : buildInfo4.name,
-		    'buildNumber'        : buildInfo4.number,
-		    'targetRepo'         : 'libs-release-local',
-		 
-		    // Optional parameters
-		    'comment'            : 'Promoting successfully tested jar ',
-		    'sourceRepo'         : 'libs-snapshot-local',
-		    'status'             : 'Released',
-		    'includeDependencies': true,
-		    'copy'               : true,
-		    // 'failFast' is true by default.
-		    // Set it to false, if you don't want the promotion to abort upon receiving the first error.
-		    'failFast'           : false
-		]
-		 
-		// Promote build
-//		server.promote promotionConfig    
-    }
+
 }
