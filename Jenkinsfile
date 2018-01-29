@@ -60,6 +60,7 @@ node {
     }
 	stage('Promotion') {
 		if (params.RELEASE_PROMOTION == 'TRUE') {
+			def rtMaven = Artifactory.newMavenBuild()
 			rtMaven.tool = 'Maven3.5.2'
 	        rtMaven.deployer.addProperty("Release","promoted")
 			def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'release:clean release:prepare release:perform' 
