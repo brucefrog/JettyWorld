@@ -20,7 +20,7 @@ node {
 		buildInfo.env.capture = true
 		buildInfo.retention maxBuilds: 10
     }
-    stage('Verify Jar') {
+    stage('Test') {
     		rtMaven.tool = 'Maven3.5.2'
     		parallel apprun: {
     			timeout(time: 30, unit: 'SECONDS') {
