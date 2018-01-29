@@ -63,6 +63,8 @@ node {
 			rtMaven.tool = 'Maven3.5.2'
 	        rtMaven.deployer.addProperty("Release","promoted")
 			def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:clean release:prepare release:perform' 
+		} else {
+			echo "Skipping promotion!!!"
 		}
 	}
 }
