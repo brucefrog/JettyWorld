@@ -13,13 +13,14 @@ node {
     stage('Java Build') {
 		// Setup Artifactory resolution
 		rtMaven.tool = 'Maven3.5.2'
-		rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
-        rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
+		// rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
         rtMaven.deployer.addProperty("MyProp","Hello")
         echo "rtMaven run clean package"
         if (params.RELEASE_PROMOTION == 'TRUE') {
-			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean release:clean release:prepare' 
+	        rtMaven.deployer server: server, repo: 'libs-release-local'
+			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean release:prepare' 
         } else {
+	        rtMaven.deployer server: server, repo: 'libs-snapshot-local'
     			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
         }
 		buildInfo.env.capture = true
@@ -48,7 +49,7 @@ node {
 		if (params.RELEASE_PROMOTION == 'TRUE') {
 	        rtMaven.deployer.addProperty("Release","promoted")
 			def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
-			rtMaven.deployer.deployArtifacts buildInfo4 
+			// rtMaven.deployer.deployArtifacts buildInfo4 
 		} else {
 			def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'install'
 			rtMaven.deployer.deployArtifacts buildInfo5 
