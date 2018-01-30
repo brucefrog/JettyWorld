@@ -50,7 +50,7 @@ node {
 			def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
 			rtMaven.deployer.deployArtifacts buildInfo4 
 		} else {
-			def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'deploy'
+			def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'install'
 			rtMaven.deployer.deployArtifacts buildInfo5 
 		}
 	}
