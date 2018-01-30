@@ -4,7 +4,7 @@
 	
 	<groupId>bruce.jfrog</groupId>
 	<artifactId>JettyWorld-parent</artifactId>
-	<version>dev</version>
+	<version>1.0</version>
 	<packaging>pom</packaging>
 	
     <properties>
@@ -19,7 +19,8 @@
 		<connection>scm:git:git://github.com/brucefrog/JettyWorld.git</connection>
 		<url>https://github.com/brucefrog/JettyWorld</url>
 		<developerConnection>scm:git:git@github.com:brucefrog/JettyWorld.git</developerConnection>
-        </scm>
+          <tag>JettyWorld-parent-1.0</tag>
+  </scm>
 	<build>
 		<directory>bin</directory>
 		<outputDirectory>bin/classes</outputDirectory>
