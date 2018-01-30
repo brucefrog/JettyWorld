@@ -10,6 +10,10 @@
     <properties>
       <jw.version>2.0.1-SNAPSHOT</jw.version>
     </properties>
+    <modules>
+	<module>java</module>
+    </modules>
+
 
 	<scm>
 		<connection>scm:git:git://github.com/brucefrog/JettyWorld.git</connection>
