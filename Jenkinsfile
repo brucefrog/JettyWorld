@@ -61,7 +61,7 @@ node {
 		// def buildInfo3 = rtMaven.run pom: 'pom.xml', goals: 'install' 
 		// buildInfo.append buildInfo3
         // rtMaven.deployer.addProperty("JarVerify","Passed")
-		rtMaven.deployer.deployArtifacts buildInfo
+		// rtMaven.deployer.deployArtifacts buildInfo
 		server.publishBuildInfo buildInfo
 		
           def xrayConfig = [
