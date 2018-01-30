@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 	
     <properties>
-      <jw.version>2.0.1-SNAPSHOT</jw.version>
+      <jw.version>${project.version}</jw.version>
     </properties>
     <modules>
 	<module>java</module>
