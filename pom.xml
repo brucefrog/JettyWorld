@@ -12,10 +12,10 @@
     </properties>
 
 	<scm>
-		<connection>scm:git:git@github.com:brucefrog/JettyWorld.git</connection>
-		<url>scm:git:git@github.com:brucefrog/JettyWorld.git</url>
+		<connection>scm:git:git://github.com/brucefrog/JettyWorld.git</connection>
+		<url>https://github.com/brucefrog/JettyWorld</url>
 		<developerConnection>scm:git:git@github.com:brucefrog/JettyWorld.git</developerConnection>
-    </scm>
+        </scm>
 	<build>
 		<directory>bin</directory>
 		<outputDirectory>bin/classes</outputDirectory>
