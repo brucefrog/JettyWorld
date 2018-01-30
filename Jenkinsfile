@@ -16,6 +16,7 @@ node {
 		rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
         rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
         rtMaven.deployer.addProperty("MyProp","Hello")
+        echo "rtMaven run clean package"
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
 		buildInfo.env.capture = true
 		buildInfo.retention maxBuilds: 10
@@ -27,6 +28,7 @@ node {
 	    			dir("java") {
 			        rtMaven.deployer.addProperty("MyProp2","Hello...")
 			    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec'
+			        echo "rtMaven run exec:exec"
 			    		// buildInfo.append buildInfo2
 			    	}
 	    		}
