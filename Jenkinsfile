@@ -13,14 +13,14 @@ node {
     stage('Java Build') {
 		// Setup Artifactory resolution
 		rtMaven.tool = 'Maven3.5.2'
-		// rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+		rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+        rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
         rtMaven.deployer.addProperty("MyProp","Hello")
         echo "rtMaven run clean package"
         if (params.RELEASE_PROMOTION == 'TRUE') {
-	        rtMaven.deployer server: server, repo: 'libs-release-local'
+        		rtMaven.deployer deployArtifacts: 'false'
 			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean release:prepare' 
         } else {
-	        rtMaven.deployer server: server, repo: 'libs-snapshot-local'
     			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
         }
 		buildInfo.env.capture = true
