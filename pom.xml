@@ -7,10 +7,6 @@
 	<version>2.0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
-    <properties>
-      <jw.version>${project.version}</jw.version>
-    </properties>
-    
     <modules>
 		<module>java</module>
 		<module>docker</module>
@@ -64,22 +60,6 @@
       	  	  	<classpath />
       	  	  	<argument>com.jfrog.sample.Hello</argument>
       	  	  </arguments>
-      	  	</configuration>
-	      </plugin>
-	      
-	      <plugin>
-	      	<groupId>org.codehaus.mojo</groupId>
-	      	<artifactId>flatten-maven-plugin</artifactId>
-	      	<executions>
-	          <execution>
-	            <id>flatten</id>
-	            <phase>process-resources</phase>
-	            <goals>
-	              <goal>flatten</goal>
-	            </goals>
-	          </execution>
-	      	</executions>
-      	  	<configuration>
       	  	</configuration>
 	      </plugin>
 	      
