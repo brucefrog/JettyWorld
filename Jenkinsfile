@@ -10,18 +10,22 @@ node {
     		// Get some code from a GitHub repository
 		git 'https://github.com/brucefrog/JettyWorld'
     }
-    stage('Build') {
+    stage('Java Build') {
 		// Setup Artifactory resolution
 		rtMaven.tool = 'Maven3.5.2'
 		rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
         rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
         rtMaven.deployer.addProperty("MyProp","Hello")
         echo "rtMaven run clean package"
-		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
+        if (params.RELEASE_PROMOTION == 'TRUE') {
+			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean release:clean release:prepare' 
+        } else {
+    			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
+        }
 		buildInfo.env.capture = true
 		buildInfo.retention maxBuilds: 10
     }
-    stage('Test') {
+    stage('Unit Test') {
     		rtMaven.tool = 'Maven3.5.2'
     		parallel apprun: {
     			timeout(time: 30, unit: 'SECONDS') {
@@ -46,7 +50,7 @@ node {
 		// buildInfo.append buildInfo3
         // rtMaven.deployer.addProperty("JarVerify","Passed")
 		rtMaven.deployer.deployArtifacts buildInfo
-		// server.publishBuildInfo buildInfo
+		server.publishBuildInfo buildInfo
 		
           def xrayConfig = [
             //Mandatory parameters
@@ -63,11 +67,10 @@ node {
           echo xrayResults as String
     }
 	stage('Promotion') {
-		server.publishBuildInfo buildInfo
 		if (params.RELEASE_PROMOTION == 'TRUE') {
 			rtMaven.tool = 'Maven3.5.2'
 	        rtMaven.deployer.addProperty("Release","promoted")
-			def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:clean release:prepare release:perform'
+			def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
 			rtMaven.deployer.deployArtifacts buildInfo4 
 		} else {
 			echo "Skipping promotion!"
