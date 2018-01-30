@@ -10,8 +10,9 @@
     <properties>
       <jw.version>${project.version}</jw.version>
     </properties>
+    
     <modules>
-	<module>java</module>
+		<module>java</module>
     </modules>
 
 
