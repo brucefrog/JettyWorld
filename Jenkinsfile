@@ -46,7 +46,7 @@ node {
 		// buildInfo.append buildInfo3
         // rtMaven.deployer.addProperty("JarVerify","Passed")
 		rtMaven.deployer.deployArtifacts buildInfo
-		server.publishBuildInfo buildInfo
+		// server.publishBuildInfo buildInfo
 		
           def xrayConfig = [
             //Mandatory parameters
@@ -63,10 +63,12 @@ node {
           echo xrayResults as String
     }
 	stage('Promotion') {
+		server.publishBuildInfo buildInfo
 		if (params.RELEASE_PROMOTION == 'TRUE') {
 			rtMaven.tool = 'Maven3.5.2'
 	        rtMaven.deployer.addProperty("Release","promoted")
-			def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:clean release:prepare release:perform' 
+			def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:clean release:prepare release:perform'
+			rtMaven.deployer.deployArtifacts buildInfo4 
 		} else {
 			echo "Skipping promotion!"
 		}
