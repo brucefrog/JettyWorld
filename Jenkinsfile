@@ -43,6 +43,17 @@ node {
     			sh 'curl "http://localhost:6800/shutdown"'
     		}
     }
+	stage('Deploy') {
+		rtMaven.tool = 'Maven3.5.2'
+		if (params.RELEASE_PROMOTION == 'TRUE') {
+	        rtMaven.deployer.addProperty("Release","promoted")
+			def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
+			rtMaven.deployer.deployArtifacts buildInfo4 
+		} else {
+			def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'deploy'
+			rtMaven.deployer.deployArtifacts buildInfo5 
+		}
+	}
     stage('Xray Scan') {
 		rtMaven.tool = 'Maven3.5.2'
 		// rtMaven.deployer.artifactDeploymentPatterns.addExclude("*.pom")
@@ -66,14 +77,4 @@ node {
           // Print full report from xray
           echo xrayResults as String
     }
-	stage('Promotion') {
-		if (params.RELEASE_PROMOTION == 'TRUE') {
-			rtMaven.tool = 'Maven3.5.2'
-	        rtMaven.deployer.addProperty("Release","promoted")
-			def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
-			rtMaven.deployer.deployArtifacts buildInfo4 
-		} else {
-			echo "Skipping promotion!"
-		}
-	}
 }
