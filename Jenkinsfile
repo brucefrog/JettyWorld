@@ -49,10 +49,13 @@ node {
 		if (params.RELEASE_PROMOTION == 'TRUE') {
 	        rtMaven.deployer.addProperty("Release","promoted")
 			def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
-			rtMaven.deployer.deployArtifacts buildInfo4 
+			rtMaven.deployer.deployArtifacts buildInfo4
+			buildInfo.append buildInfo4 
+			
 		} else {
 			def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'install'
 			rtMaven.deployer.deployArtifacts buildInfo5 
+			buildInfo.append buildInfo5
 		}
 	}
     stage('Xray Scan') {
