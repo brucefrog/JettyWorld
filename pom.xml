@@ -3,15 +3,18 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>bruce.jfrog</groupId>
-	<artifactId>JettyWorld</artifactId>
-	<version>1.21-SNAPSHOT</version>
+	<artifactId>JettyWorld-parent</artifactId>
+	<version>dev</version>
 	<packaging>pom</packaging>
+	
+    <properties>
+      <jw.version>2.0.1-SNAPSHOT</jw.version>
+    </properties>
 
 	<scm>
 		<connection>scm:git:git@github.com:brucefrog/JettyWorld.git</connection>
 		<url>scm:git:git@github.com:brucefrog/JettyWorld.git</url>
 		<developerConnection>scm:git:git@github.com:brucefrog/JettyWorld.git</developerConnection>
-	  	<tag>JettyWorld-1.8</tag>
     </scm>
 	<build>
 		<directory>bin</directory>
@@ -57,6 +60,22 @@
       	  	</configuration>
 	      </plugin>
 	      
+	      <plugin>
+	      	<groupId>org.codehaus.mojo</groupId>
+	      	<artifactId>flatten-maven-plugin</artifactId>
+	      	<executions>
+	          <execution>
+	            <id>flatten</id>
+	            <phase>process-resources</phase>
+	            <goals>
+	              <goal>flatten</goal>
+	            </goals>
+	          </execution>
+	      	</executions>
+      	  	<configuration>
+      	  	</configuration>
+	      </plugin>
+	      
 		  <plugin>
 		    <groupId>org.apache.maven.plugins</groupId>
 		    <artifactId>maven-release-plugin</artifactId>
@@ -96,7 +115,7 @@
 	        <url>http://35.186.255.251/artifactory/libs-release-local</url>
 	    </repository>
 	</distributionManagement>
-	
+	<dependencyManagement>	
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -129,5 +148,5 @@
 			<version>9.4.8.v20171121</version>
 		</dependency>
 	</dependencies>
-
+	</dependencyManagement>
 </project>
