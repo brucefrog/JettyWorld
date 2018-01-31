@@ -34,7 +34,7 @@ node {
 			        rtMaven.deployer.addProperty("MyProp2","Hello...")
 			    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec'
 			        echo "rtMaven run exec:exec"
-			    		// buildInfo.append buildInfo2
+			    		// buildInfo.append buildInfo2 
 			    	}
 	    		}
     		},
@@ -46,6 +46,8 @@ node {
     }
 	stage('Deploy') {
 		rtMaven.tool = 'Maven3.5.2'
+		rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+        rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
 		if (params.RELEASE_PROMOTION == 'TRUE') {
 	        rtMaven.deployer.addProperty("Release","promoted")
 	        rtMaven.deployer deployArtifacts: 'true'
