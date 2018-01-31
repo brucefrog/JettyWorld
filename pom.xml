@@ -4,7 +4,7 @@
 	
 	<groupId>bruce.jfrog</groupId>
 	<artifactId>JettyParent</artifactId>
-	<version>1.100.162-SNAPSHOT</version>
+	<version>1.2.100-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
     <modules>
