@@ -19,7 +19,7 @@ node {
         rtMaven.deployer.addProperty("MyProp","Hello")
         if (params.RELEASE_PROMOTION == 'TRUE') {
         		rtMaven.deployer deployArtifacts: 'false'
-			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'release:prepare-with-pom', resume: 'false'
+			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'release:prepare-with-pom -Dresume=false'
         } else {
     			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
         }
