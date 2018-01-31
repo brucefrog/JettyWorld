@@ -5,6 +5,7 @@ node {
 	def image = 'docker.artifactory.bruce/onboard/hello'
 	def buildImage = image + ":" + env.BUILD_NUMBER
 	def buildInfo
+		rtMaven.tool = 'Maven3.5.2'
 	
     stage('Checkout') {
     		// Get some code from a GitHub repository
@@ -12,7 +13,6 @@ node {
     }
     stage('Java Build') {
 		// Setup Artifactory resolution
-		rtMaven.tool = 'Maven3.5.2'
 		rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
         rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
         rtMaven.deployer.addProperty("MyProp","Hello")
