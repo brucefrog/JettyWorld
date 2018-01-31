@@ -79,7 +79,7 @@ node {
           // Print full report from xray
           echo xrayResults as String
     }
-    state('Promote') {
+    stage('Promote') {
     		if (env.BRANCH_NAME == 'master') {
 
 			def promotionConfig = [
