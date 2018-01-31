@@ -5,6 +5,7 @@ node {
 	def image = 'docker.artifactory.bruce/onboard/hello'
 	def buildImage = image + ":" + env.BUILD_NUMBER
 	def buildInfo
+	def descriptor = Artifactory.mavenDescriptor()
 	
     stage('Checkout') {
     		// Get some code from a GitHub repository
@@ -18,10 +19,14 @@ node {
         rtMaven.deployer.addProperty("MyProp","Hello")
         echo "rtMaven run clean package"
         if (params.RELEASE_PROMOTION == 'TRUE') {
+        		descriptor.setVersion "the.group.id:the.artifact.id", "1.x." + env.BUILD_NUMBER
+        		descriptor.transform()
         		rtMaven.deployer deployArtifacts: 'false'
-	        echo "% rtMaven run release:prepare"
-			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'release:prepare' 
+	        // echo "% rtMaven run release:prepare"
+			//buildInfo = rtMaven.run pom: 'pom.xml', goals: 'release:prepare' 
         } else {
+        		descriptor.setVersion "the.group.id:the.artifact.id", "1.x." + env.BUILD_NUMBER + "-SNAPSHOT"
+        		descriptor.transform()
     			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
         }
 		buildInfo.env.capture = true
@@ -53,9 +58,10 @@ node {
 	        rtMaven.deployer.addProperty("Release","promoted")
 	        rtMaven.deployer deployArtifacts: 'false'
 	        echo "% rtMaven run release:perform"
-			def buildInfo6 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
+			def buildInfo6 = rtMaven.run pom: 'pom.xml', goals: 'install'
+			// def buildInfo6 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
 	        echo "% rtMaven.deployer.deployArtifacts buildInfo6"
-			rtMaven.deployer.deployArtifacts buildInfo6
+			// rtMaven.deployer.deployArtifacts buildInfo6
 			// buildInfo.append buildInfo6
 	        echo "% server.publishBuildInfo buildInfo6"
 			server.publishBuildInfo buildInfo6
