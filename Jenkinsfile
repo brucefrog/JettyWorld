@@ -4,7 +4,10 @@ node {
 	def artDocker = Artifactory.docker server: server, host: "tcp://localhost:2375"
 	def image = 'docker.artifactory.bruce/onboard/hello'
 	def buildImage = image + ":" + env.BUILD_NUMBER
-	def buildInfo
+
+	def buildInfo = Artifactory.newBuildInfo()
+	buildInfo.env.capture = true
+	buildInfo.retention maxBuilds: 10
 	
 	rtMaven.tool = 'Maven3.5.2'
 	rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
@@ -17,9 +20,8 @@ node {
     stage('Java Build') {
 		// Setup Artifactory resolution
         rtMaven.deployer.addProperty("MyProp","Hello")
-		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
-		buildInfo.env.capture = true
-		buildInfo.retention maxBuilds: 10
+		def buildInfo1 = rtMaven.run pom: 'pom.xml', goals: 'clean package'
+		buildInfo.append buildInfo1 
     }
     stage('Unit Test') {
     		parallel apprun: {
@@ -37,7 +39,9 @@ node {
     }
 	stage('Deploy') {
 			def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'install'
-			rtMaven.deployer.deployArtifacts buildInfo5 
+			buildInfo.append buildInfo5
+			
+			// rtMaven.deployer.deployArtifacts buildInfo5 
 			// buildInfo.append buildInfo5
 			// server.publishBuildInfo buildInfo5
 	}
