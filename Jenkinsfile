@@ -48,14 +48,16 @@ node {
 		rtMaven.tool = 'Maven3.5.2'
 		if (params.RELEASE_PROMOTION == 'TRUE') {
 	        rtMaven.deployer.addProperty("Release","promoted")
-			def buildInfo4 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
-			rtMaven.deployer.deployArtifacts buildInfo4
-			buildInfo.append buildInfo4 
+			def buildInfo6 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
+			rtMaven.deployer.deployArtifacts buildInfo6
+			// buildInfo.append buildInfo4 
+			server.publishBuildInfo buildInfo6
 			sleep 30 
 		} else {
 			def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'install'
 			rtMaven.deployer.deployArtifacts buildInfo5 
-			buildInfo.append buildInfo5
+			// buildInfo.append buildInfo5
+			server.publishBuildInfo buildInfo5
 		}
 	}
     stage('Xray Scan') {
@@ -65,7 +67,7 @@ node {
 		// buildInfo.append buildInfo3
         // rtMaven.deployer.addProperty("JarVerify","Passed")
 		// rtMaven.deployer.deployArtifacts buildInfo
-		server.publishBuildInfo buildInfo
+		// server.publishBuildInfo buildInfo
 		
           def xrayConfig = [
             //Mandatory parameters
