@@ -33,8 +33,8 @@ node {
     			timeout(time: 30, unit: 'SECONDS') {
 	    			dir("java") {
 			        rtMaven.deployer.addProperty("MyProp2","Hello...")
-			    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec'
 			        echo "% rtMaven run exec:exec"
+			    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec'
 			    		// buildInfo.append buildInfo2 
 			    	}
 	    		}
@@ -51,7 +51,7 @@ node {
         rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
 		if (params.RELEASE_PROMOTION == 'TRUE') {
 	        rtMaven.deployer.addProperty("Release","promoted")
-	        rtMaven.deployer deployArtifacts: 'true'
+	        rtMaven.deployer deployArtifacts: 'false'
 	        echo "% rtMaven run release:perform"
 			def buildInfo6 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
 	        echo "% rtMaven.deployer.deployArtifacts buildInfo6"
