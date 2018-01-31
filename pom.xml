@@ -17,7 +17,6 @@
 		<connection>scm:git:git://github.com/brucefrog/JettyWorld.git</connection>
 		<url>https://github.com/brucefrog/JettyWorld</url>
 		<developerConnection>scm:git:git@github.com:brucefrog/JettyWorld.git</developerConnection>
-    <tag>JettyParent-1.2.103</tag>
   </scm>
 	<build>
 		<directory>bin</directory>
