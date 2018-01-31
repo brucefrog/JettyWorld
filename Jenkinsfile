@@ -5,7 +5,10 @@ node {
 	def image = 'docker.artifactory.bruce/onboard/hello'
 	def buildImage = image + ":" + env.BUILD_NUMBER
 	def buildInfo
-		rtMaven.tool = 'Maven3.5.2'
+	
+	rtMaven.tool = 'Maven3.5.2'
+	rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+    rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
 	
     stage('Checkout') {
     		// Get some code from a GitHub repository
@@ -13,13 +16,9 @@ node {
     }
     stage('Java Build') {
 		// Setup Artifactory resolution
-		rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
-        rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
         rtMaven.deployer.addProperty("MyProp","Hello")
-        echo "rtMaven run clean package"
         if (params.RELEASE_PROMOTION == 'TRUE') {
         		rtMaven.deployer deployArtifacts: 'false'
-	        echo "% rtMaven run release:prepare"
 			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'release:prepare' 
         } else {
     			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
@@ -28,7 +27,6 @@ node {
 		buildInfo.retention maxBuilds: 10
     }
     stage('Unit Test') {
-    		rtMaven.tool = 'Maven3.5.2'
     		parallel apprun: {
     			timeout(time: 30, unit: 'SECONDS') {
 	    			dir("java") {
@@ -46,13 +44,9 @@ node {
     		}
     }
 	stage('Deploy') {
-		rtMaven.tool = 'Maven3.5.2'
-		rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
-        rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
 		if (params.RELEASE_PROMOTION == 'TRUE') {
 	        rtMaven.deployer.addProperty("Release","promoted")
 	        rtMaven.deployer deployArtifacts: 'false'
-	        echo "% rtMaven run release:perform"
 			def buildInfo6 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
 	        echo "% rtMaven.deployer.deployArtifacts buildInfo6"
 			// rtMaven.deployer.deployArtifacts buildInfo6
