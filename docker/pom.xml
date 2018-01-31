@@ -5,7 +5,7 @@
     <parent>
         <groupId>bruce.jfrog</groupId>
         <artifactId>JettyParent</artifactId>
-        <version>2.0.22-SNAPSHOT</version>
+        <version>1.100.162-SNAPSHOT</version>
     </parent>
 
 	
