@@ -48,7 +48,7 @@ node {
 	        rtMaven.deployer.addProperty("Release","promoted")
 	        rtMaven.deployer deployArtifacts: 'false'
 			def buildInfo6 = rtMaven.run pom: 'pom.xml', goals: 'install'
-			def buildInfo6 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
+			// def buildInfo6 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
 	        echo "% rtMaven.deployer.deployArtifacts buildInfo6"
 			// rtMaven.deployer.deployArtifacts buildInfo6
 			// buildInfo.append buildInfo6
