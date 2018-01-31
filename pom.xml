@@ -77,8 +77,8 @@
 		    <configuration>
 		      <!--
 		        During release:perform, enable the "release" profile
-		       -->
 		       <preparationGoals>package</preparationGoals>
+		       -->
 		      <releaseProfiles>central</releaseProfiles>
 		    </configuration>
 		  </plugin>
