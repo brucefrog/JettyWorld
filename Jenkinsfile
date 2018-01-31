@@ -89,7 +89,7 @@ node {
 			    'targetRepo'         : 'libs-release-local',
 			 
 			    // Optional parameters
-			    'comment'            : 'this is the promotion comment',
+			    'comment'            : 'Promote build in place',
 			    'sourceRepo'         : 'libs-release-local',
 			    'status'             : 'Released',
 			    'includeDependencies': true,
