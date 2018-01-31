@@ -12,7 +12,7 @@ node {
 	
     stage('Checkout') {
     		// Get some code from a GitHub repository
-		git 'https://github.com/brucefrog/JettyWorld'
+		git 'https://github.com/brucefrog/JettyWorld' + '+refs/heads/*:refs/remotes/origin/' + env.BRANCH_NAME
     }
     stage('Java Build') {
 		// Setup Artifactory resolution
