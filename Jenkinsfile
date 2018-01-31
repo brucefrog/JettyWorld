@@ -83,13 +83,5 @@ node {
           // Print full report from xray
           echo xrayResults as String
     }
-    stage('Promote') {
-    		if (env.BRANCH_NAME == 'master') {
 
-
-    			
-    		} else {
-    			echo 'Not promoting non-release builds!'
-    		}
-    }
 }
