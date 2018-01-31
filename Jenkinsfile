@@ -19,6 +19,7 @@ node {
         echo "rtMaven run clean package"
         if (params.RELEASE_PROMOTION == 'TRUE') {
         		rtMaven.deployer deployArtifacts: 'false'
+	        echo "% rtMaven run release:clean release:prepare"
 			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'release:clean release:prepare' 
         } else {
     			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
@@ -33,7 +34,7 @@ node {
 	    			dir("java") {
 			        rtMaven.deployer.addProperty("MyProp2","Hello...")
 			    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec'
-			        echo "rtMaven run exec:exec"
+			        echo "% rtMaven run exec:exec"
 			    		// buildInfo.append buildInfo2 
 			    	}
 	    		}
@@ -51,9 +52,12 @@ node {
 		if (params.RELEASE_PROMOTION == 'TRUE') {
 	        rtMaven.deployer.addProperty("Release","promoted")
 	        rtMaven.deployer deployArtifacts: 'true'
+	        echo "% rtMaven run release:perform"
 			def buildInfo6 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
+	        echo "% rtMaven.deployer.deployArtifacts buildInfo6"
 			rtMaven.deployer.deployArtifacts buildInfo6
 			// buildInfo.append buildInfo6
+	        echo "% server.publishBuildInfo buildInfo6"
 			server.publishBuildInfo buildInfo6
 			sleep 30 
 		} else {
