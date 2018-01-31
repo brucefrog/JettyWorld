@@ -19,8 +19,8 @@ node {
         echo "rtMaven run clean package"
         if (params.RELEASE_PROMOTION == 'TRUE') {
         		rtMaven.deployer deployArtifacts: 'false'
-	        echo "% rtMaven run release:clean release:prepare"
-			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean release:prepare' 
+	        echo "% rtMaven run release:prepare"
+			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'release:prepare' 
         } else {
     			buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package' 
         }
