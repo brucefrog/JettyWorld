@@ -48,9 +48,10 @@ node {
 		rtMaven.tool = 'Maven3.5.2'
 		if (params.RELEASE_PROMOTION == 'TRUE') {
 	        rtMaven.deployer.addProperty("Release","promoted")
+	        rtMaven.deployer deployArtifacts: 'true'
 			def buildInfo6 = rtMaven.run pom: 'pom.xml', goals: 'release:perform'
 			rtMaven.deployer.deployArtifacts buildInfo6
-			// buildInfo.append buildInfo4 
+			// buildInfo.append buildInfo6
 			server.publishBuildInfo buildInfo6
 			sleep 30 
 		} else {
@@ -79,8 +80,8 @@ node {
           ]
 
           // Scan xray build
-          def xrayResults = server.xrayScan xrayConfig
+          // def xrayResults = server.xrayScan xrayConfig
           // Print full report from xray
-          echo xrayResults as String
+          // echo xrayResults as String
     }
 }
