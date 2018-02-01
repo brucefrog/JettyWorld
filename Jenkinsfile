@@ -29,6 +29,7 @@ node {
     			echo "attempting to transform version number"
 			def descriptor = Artifactory.mavenDescriptor()
 			descriptor.version = '1.0.0'
+			descriptor.pomFile = 'pom.xml'
     			descriptor.setVersion "the.group.id:the.artifact.id", "1.0." + env.BUILD_NUMBER
     			descriptor.transform()
     		}
