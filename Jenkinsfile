@@ -4,7 +4,7 @@ node {
 	def artDocker = Artifactory.docker server: server, host: "tcp://localhost:2375"
 	def image = 'docker.artifactory.bruce/onboard/hello'
 	def buildImage = image + ":" + env.BUILD_NUMBER
-
+	def buildVersion
 	def buildInfo
 	
 	rtMaven.tool = 'Maven3.5.2'
@@ -25,15 +25,19 @@ node {
 		// Setup Artifactory resolution
 		rtMaven.deployer.deployArtifacts = false
         rtMaven.deployer.addProperty("MyProp","Hello")
+        
     		if (env.BRANCH_NAME == 'master') {
     			echo "attempting to transform version number"
+    			buildVersion = "bruce.jfrog:JettyParent", "3.1." + env.BUILD_NUMBER
 			def descriptor = Artifactory.mavenDescriptor()
 			descriptor.version = '1.x.y'
 			descriptor.pomFile = 'pom.xml'
-    			descriptor.setVersion "bruce.jfrog:JettyParent", "3.1." + env.BUILD_NUMBER
+    			descriptor.setVersion buildVersion
     			descriptor.transform()
+    		} else if (env.BRANCH_NAME == 'snapshot' {
+    			buildVersion = "bruce.jfrog:JettyParent", "3.1." + env.BUILD_NUMBER + "-SNAPSHOT"
     		}
-		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package -DBUILD=' + env.BUILD_NUMBER
+		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package -D_version=' + env.BUILD_NUMBER
     		if (env.BRANCH_NAME) {
     			buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
     		}
@@ -71,7 +75,7 @@ node {
     }
 	stage('Deploy') {
 		rtMaven.deployer.deployArtifacts = false
-		def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'install -DBUILD=' + env.BUILD_NUMBER
+		def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'install -D_version=' + env.BUILD_NUMBER
 		buildInfo.append buildInfo5
 		
 		// rtMaven.deployer.deployArtifacts buildInfo 

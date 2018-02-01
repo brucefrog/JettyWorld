@@ -17,7 +17,7 @@
 		<dependency>
 			<groupId>bruce.jfrog</groupId>
 			<artifactId>JettyWorld</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${_version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
