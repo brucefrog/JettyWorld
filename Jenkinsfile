@@ -69,6 +69,7 @@ node {
         sh 'docker rmi ' + buildImage
     }
     stage('Xray Scan') {
+    		sh 'printenv'
 		  server.publishBuildInfo buildInfo
 		  sleep 20
 		  
