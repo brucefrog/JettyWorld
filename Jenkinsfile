@@ -29,6 +29,7 @@ node {
         rtMaven.deployer.addProperty("MyProp","Hello")
     		if (env.BRANCH_NAME) {
     			descriptor.setVersion "the.group.id:the.artifact.id", "1.0." + env.BUILD_NUMBER
+    			descriptor.transform()
     		}
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package -DBUILD=' + env.BUILD_NUMBER
     		if (env.BRANCH_NAME) {
