@@ -23,7 +23,7 @@ node {
     }
     stage('Java Build') {
 		// Setup Artifactory resolution
-		// rtMaven.deployer.deployArtifacts = false
+		rtMaven.deployer.deployArtifacts = false
         rtMaven.deployer.addProperty("MyProp","Hello")
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package -Dbuildnum=' + env.BUILD_NUMBER
     		if (env.BRANCH_NAME) {
@@ -62,11 +62,11 @@ node {
     		}
     }
 	stage('Deploy') {
-		// rtMaven.deployer.deployArtifacts = false
+		rtMaven.deployer.deployArtifacts = false
 		def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'install -Dbuildnum=' + env.BUILD_NUMBER
 		buildInfo.append buildInfo5
 		
-		rtMaven.deployer.deployArtifacts buildInfo 
+		// rtMaven.deployer.deployArtifacts buildInfo 
 		// buildInfo.append buildInfo5
 		// server.publishBuildInfo buildInfo5
 	}
@@ -92,7 +92,7 @@ node {
     }
     stage('Xray Scan') {
     		sh 'printenv'
-    		
+    		rtMaven.deployer.deployArtifacts buildInfo 
 		  server.publishBuildInfo buildInfo
 		  
           def xrayConfig = [
