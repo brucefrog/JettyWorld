@@ -37,7 +37,7 @@ node {
     		} else if (env.BRANCH_NAME == 'snapshot' {
     			buildVersion = buildVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
     		}
-		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package -D_version=' + env.BUILD_NUMBER
+		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package -D_version=' + buildVersion
     		if (env.BRANCH_NAME) {
     			buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
     		}
@@ -75,7 +75,7 @@ node {
     }
 	stage('Deploy') {
 		rtMaven.deployer.deployArtifacts = false
-		def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'install -D_version=' + env.BUILD_NUMBER
+		def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'install -D_version=' + buildVersion
 		buildInfo.append buildInfo5
 		
 		// rtMaven.deployer.deployArtifacts buildInfo 
