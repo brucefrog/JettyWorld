@@ -25,12 +25,12 @@ node {
 		// Setup Artifactory resolution
 		rtMaven.deployer.deployArtifacts = false
         rtMaven.deployer.addProperty("MyProp","Hello")
-    		if (env.BRANCH_NAME) {
+    		if (env.BRANCH_NAME == 'master') {
     			echo "attempting to transform version number"
 			def descriptor = Artifactory.mavenDescriptor()
-			descriptor.version = '1.0.0'
+			descriptor.version = '1.x.y'
 			descriptor.pomFile = 'pom.xml'
-    			descriptor.setVersion "bruce.jfrog:JettyParent", "1.0." + env.BUILD_NUMBER
+    			descriptor.setVersion "bruce.jfrog:JettyParent", "3.1." + env.BUILD_NUMBER
     			descriptor.transform()
     		}
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package -DBUILD=' + env.BUILD_NUMBER
