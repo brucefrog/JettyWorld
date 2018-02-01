@@ -34,9 +34,10 @@ node {
 			descriptor.pomFile = 'pom.xml'
     			descriptor.setVersion "bruce.jfrog:JettyParent", buildVersion
     			descriptor.transform()
-    		} else if (env.BRANCH_NAME == 'snapshot' {
+    		} else if (env.BRANCH_NAME == 'snapshot') {
     			buildVersion = buildVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
     		}
+    		
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package -D_version=' + buildVersion
     		if (env.BRANCH_NAME) {
     			buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
