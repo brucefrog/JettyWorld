@@ -8,7 +8,7 @@ node {
 	def buildInfo
 	
 	rtMaven.tool = 'Maven3.5.2'
-	rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+	rtMaven.resolver server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot'
     rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
 	
     stage('Checkout') {
