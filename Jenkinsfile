@@ -25,7 +25,7 @@ node {
 		// Setup Artifactory resolution
 		rtMaven.deployer.deployArtifacts = false
         rtMaven.deployer.addProperty("MyProp","Hello")
-		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package -Dbuildnum=${env.BUILD_NUMBER}'
+		buildInfo = rtMaven.run pom: 'pom.xml', goals: "clean package -Dbuildnum=${env.BUILD_NUMBER}"
     		if (env.BRANCH_NAME) {
     			buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
     		}
