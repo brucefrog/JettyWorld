@@ -4,7 +4,7 @@ node {
 	def artDocker = Artifactory.docker server: server, host: "tcp://localhost:2375"
 	def image = 'docker.artifactory.bruce/onboard/hello'
 	def buildImage = image + ":" + env.BUILD_NUMBER
-	def buildVersion
+	def buildVersion = "3.1"
 	def buildInfo
 	
 	rtMaven.tool = 'Maven3.5.2'
@@ -28,14 +28,14 @@ node {
         
     		if (env.BRANCH_NAME == 'master') {
     			echo "attempting to transform version number"
-    			buildVersion = "bruce.jfrog:JettyParent", "3.1." + env.BUILD_NUMBER
+    			buildVersion = buildVersion + "." + env.BUILD_NUMBER
 			def descriptor = Artifactory.mavenDescriptor()
 			descriptor.version = '1.x.y'
 			descriptor.pomFile = 'pom.xml'
-    			descriptor.setVersion buildVersion
+    			descriptor.setVersion "bruce.jfrog:JettyParent", buildVersion
     			descriptor.transform()
     		} else if (env.BRANCH_NAME == 'snapshot' {
-    			buildVersion = "bruce.jfrog:JettyParent", "3.1." + env.BUILD_NUMBER + "-SNAPSHOT"
+    			buildVersion = buildVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
     		}
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package -D_version=' + env.BUILD_NUMBER
     		if (env.BRANCH_NAME) {
