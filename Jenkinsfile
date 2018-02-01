@@ -61,12 +61,13 @@ node {
     		}
     }
 	stage('Deploy') {
-			def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'deploy'
-			buildInfo.append buildInfo5
-			
-			// rtMaven.deployer.deployArtifacts buildInfo5 
-			// buildInfo.append buildInfo5
-			// server.publishBuildInfo buildInfo5
+		rtMaven.deployer.deployArtifacts = false
+		def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'install'
+		buildInfo.append buildInfo5
+		
+		rtMaven.deployer.deployArtifacts buildInfo 
+		// buildInfo.append buildInfo5
+		// server.publishBuildInfo buildInfo5
 	}
     stage('Dockerize') {
     		dir("docker") {
