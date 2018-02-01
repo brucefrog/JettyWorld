@@ -66,7 +66,8 @@ node {
     }
     stage('Xray Scan') {
 		  server.publishBuildInfo buildInfo
-		
+		  sleep 20
+		  
           def xrayConfig = [
             //Mandatory parameters
             'buildName'         : env.JOB_NAME,
