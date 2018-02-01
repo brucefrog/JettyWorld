@@ -111,7 +111,9 @@ node {
     }
     
     if (env.BRANCH_NAME == 'master') {
-    		echo 'master branch!!!'
+    		stage('Promotion') {
+	    		echo 'promoting master branch!!!'
+    		}
     }
 
 }
