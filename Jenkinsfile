@@ -4,6 +4,8 @@ node {
 	def artDocker = Artifactory.docker server: server, host: "tcp://localhost:2375"
 	def image = 'docker.artifactory.bruce/onboard/hello'
 	def buildImage = image + ":" + env.BUILD_NUMBER
+	def descriptor = Artifactory.mavenDescriptor()
+	descriptor.version = '1.0.0'
 
 	def buildInfo
 	
@@ -25,6 +27,9 @@ node {
 		// Setup Artifactory resolution
 		rtMaven.deployer.deployArtifacts = false
         rtMaven.deployer.addProperty("MyProp","Hello")
+    		if (env.BRANCH_NAME) {
+    			descriptor.setVersion "the.group.id:the.artifact.id", "1.0." + env.BUILD_NUMBER
+    		}
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package -DBUILD=' + env.BUILD_NUMBER
     		if (env.BRANCH_NAME) {
     			buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
