@@ -34,6 +34,8 @@ node {
 			descriptor.pomFile = 'pom.xml'
     			descriptor.setVersion "bruce.jfrog:JettyParent", buildVersion
     			descriptor.transform()
+    			descriptor.setVersion "bruce.jfrog:JettyWorld", buildVersion
+    			descriptor.transform()
     		} else if (env.BRANCH_NAME == 'snapshot') {
     			buildVersion = buildVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
     		}
