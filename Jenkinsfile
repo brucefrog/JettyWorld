@@ -78,7 +78,9 @@ node {
     }
     stage('Xray Scan') {
     		sh 'printenv'
-    		// buildInfo.name = env.JOB_NAME
+    		if (env.BRANCH_NAME) {
+    			buildInfo.name = 'JettyWorld-" + env.BRANCH_NAME
+    		}
     		
 		  server.publishBuildInfo buildInfo
 		  
