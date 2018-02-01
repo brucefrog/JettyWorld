@@ -65,7 +65,7 @@ node {
         sh 'docker rmi ' + buildImage
     }
     stage('Xray Scan') {
-		  server.publishBuildInfo(buildInfo)
+		  server.publishBuildInfo buildInfo
 		
           def xrayConfig = [
             //Mandatory parameters
@@ -80,7 +80,7 @@ node {
           def xrayResults = server.xrayScan xrayConfig
           
           // Print full report from xray
-          echo xrayResults as String
+          // echo xrayResults as String
     }
 
 }
