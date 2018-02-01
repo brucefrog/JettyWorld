@@ -23,6 +23,7 @@ node {
     }
     stage('Java Build') {
 		// Setup Artifactory resolution
+		rtMaven.deployer.deployArtifacts = false
         rtMaven.deployer.addProperty("MyProp","Hello")
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package'
     		if (env.BRANCH_NAME) {
