@@ -23,6 +23,10 @@ node {
 		// Setup Artifactory resolution
         rtMaven.deployer.addProperty("MyProp","Hello")
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package'
+    		if (env.BRANCH_NAME) {
+    			buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
+			buildInfo.deployer.addProperty('build.name',buildInfo.name)
+    		}
 		buildInfo.env.capture = true
 		buildInfo.retention maxBuilds: 10
     }
@@ -78,9 +82,6 @@ node {
     }
     stage('Xray Scan') {
     		sh 'printenv'
-    		if (env.BRANCH_NAME) {
-    			buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
-    		}
     		
 		  server.publishBuildInfo buildInfo
 		  
