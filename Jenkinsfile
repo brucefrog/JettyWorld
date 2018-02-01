@@ -25,7 +25,7 @@ node {
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package'
     		if (env.BRANCH_NAME) {
     			buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
-			buildInfo.deployer.addProperty('build.name',buildInfo.name)
+        		rtMaven.deployer.addProperty("build.name",buildInfo.name)
     		}
 		buildInfo.env.capture = true
 		buildInfo.retention maxBuilds: 10
