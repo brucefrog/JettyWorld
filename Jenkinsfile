@@ -13,7 +13,11 @@ node {
 	
     stage('Checkout') {
     		// Get some code from a GitHub repository
-		git url: 'https://github.com/brucefrog/JettyWorld', branch: env.BRANCH_NAME
+    		if (env.BRANCH_NAME) {
+			git url: 'https://github.com/brucefrog/JettyWorld', branch: env.BRANCH_NAME
+		} else {
+			git url: 'https://github.com/brucefrog/JettyWorld'
+		}
     }
     stage('Java Build') {
 		// Setup Artifactory resolution
