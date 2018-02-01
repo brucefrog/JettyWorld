@@ -15,6 +15,8 @@ node {
     		// Get some code from a GitHub repository
     		if (env.BRANCH_NAME) {
 			git url: 'https://github.com/brucefrog/JettyWorld', branch: env.BRANCH_NAME
+		} else if (param.BRANCH_NAME) {
+			git url: 'https://github.com/brucefrog/JettyWorld', branch: param.BRANCH_NAME
 		} else {
 			git url: 'https://github.com/brucefrog/JettyWorld'
 		}
@@ -31,9 +33,16 @@ node {
     }
     stage('Unit Test') {
     		parallel apprun: {
-    			timeout(time: 30, unit: 'SECONDS') {
+    			timeout(time: 60, unit: 'SECONDS') {
 	    			dir("java") {
-			    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec'
+	    				try {
+				    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec'
+	    				} catch (error) {
+	    					retry(2) {
+	    						sleep 10
+					    		def buildInfo2 = rtMaven.run pom: 'pom.xml', goals: 'exec:exec'
+	    					}
+	    				}
 			    	}
 	    		}
     		},
