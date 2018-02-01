@@ -35,9 +35,17 @@ node {
 	    		}
     		},
     		apptest: {
-    			sleep 10
-    			sh 'curl "http://localhost:6800/hello"'
-    			sh 'curl "http://localhost:6800/shutdown"'
+    			try {
+	    			sleep 5
+	    			sh 'curl "http://localhost:6800/hello"'
+	    			sh 'curl "http://localhost:6800/shutdown"'
+    			} catch(error) {
+    				retry(2) {
+		    			sleep 10
+		    			sh 'curl "http://localhost:6800/hello"'
+		    			sh 'curl "http://localhost:6800/shutdown"'
+    				}
+    			}
     		}
     }
 	stage('Deploy') {
@@ -71,7 +79,6 @@ node {
     stage('Xray Scan') {
     		sh 'printenv'
 		  server.publishBuildInfo buildInfo
-		  sleep 20
 		  
           def xrayConfig = [
             //Mandatory parameters
