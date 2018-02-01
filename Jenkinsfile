@@ -109,5 +109,9 @@ node {
           // Print full report from xray
           // echo xrayResults as String
     }
+    
+    if (env.BRANCH_NAME == 'master') {
+    		echo 'master branch!!!'
+    }
 
 }
