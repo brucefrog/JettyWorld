@@ -78,7 +78,7 @@ node {
     }
 	stage('Deploy') {
 		rtMaven.deployer.deployArtifacts = false
-		def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'install'
+		def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'deploy'
 		buildInfo.append buildInfo5
 		
 		// rtMaven.deployer.deployArtifacts buildInfo 
