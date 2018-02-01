@@ -4,8 +4,6 @@ node {
 	def artDocker = Artifactory.docker server: server, host: "tcp://localhost:2375"
 	def image = 'docker.artifactory.bruce/onboard/hello'
 	def buildImage = image + ":" + env.BUILD_NUMBER
-	def descriptor = Artifactory.mavenDescriptor()
-	descriptor.version = '1.0.0'
 
 	def buildInfo
 	
@@ -28,6 +26,9 @@ node {
 		rtMaven.deployer.deployArtifacts = false
         rtMaven.deployer.addProperty("MyProp","Hello")
     		if (env.BRANCH_NAME) {
+    			echo "attempting to transform version number"
+			def descriptor = Artifactory.mavenDescriptor()
+			descriptor.version = '1.0.0'
     			descriptor.setVersion "the.group.id:the.artifact.id", "1.0." + env.BUILD_NUMBER
     			descriptor.transform()
     		}
