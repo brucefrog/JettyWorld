@@ -78,13 +78,14 @@ node {
     }
     stage('Xray Scan') {
     		sh 'printenv'
-    		buildInfo.name = env.JOB_NAME
+    		// buildInfo.name = env.JOB_NAME
     		
 		  server.publishBuildInfo buildInfo
 		  
           def xrayConfig = [
             //Mandatory parameters
-            'buildName'         : env.JOB_NAME,
+            // 'buildName'         : env.JOB_NAME,
+            'buildName'         : buildInfo.name,
             'buildNumber'       : env.BUILD_NUMBER,
 
             //Optional
