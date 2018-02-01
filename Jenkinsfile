@@ -30,7 +30,7 @@ node {
 			def descriptor = Artifactory.mavenDescriptor()
 			descriptor.version = '1.0.0'
 			descriptor.pomFile = 'pom.xml'
-    			descriptor.setVersion "the.group.id:the.artifact.id", "1.0." + env.BUILD_NUMBER
+    			descriptor.setVersion "bruce.jfrog:JettyParent", "1.0." + env.BUILD_NUMBER
     			descriptor.transform()
     		}
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package -DBUILD=' + env.BUILD_NUMBER
