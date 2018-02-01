@@ -113,6 +113,25 @@ node {
     if (env.BRANCH_NAME == 'master') {
     		stage('Promotion') {
 	    		echo 'promoting master branch!!!'
+			def promotionConfig = [
+			    // Mandatory parameters
+			    'buildName'          : buildInfo.name,
+			    'buildNumber'        : buildInfo.number,
+			    'targetRepo'         : 'libs-release-local',
+			 
+			    // Optional parameters
+			    'comment'            : 'this is the promotion comment',
+			    'sourceRepo'         : 'libs-release-local',
+			    'status'             : 'Released',
+			    'includeDependencies': true,
+			    'copy'               : false,
+			    // 'failFast' is true by default.
+			    // Set it to false, if you don't want the promotion to abort upon receiving the first error.
+			    'failFast'           : true
+			]
+			 
+			// Promote build
+			server.promote promotionConfig	    		
     		}
     }
 
