@@ -20,8 +20,8 @@ node {
     		// Get some code from a GitHub repository
     		if (env.BRANCH_NAME) {
 			git url: 'https://github.com/brucefrog/JettyWorld', branch: env.BRANCH_NAME
-		} else if (param.BRANCH_NAME) {
-			git url: 'https://github.com/brucefrog/JettyWorld', branch: param.BRANCH_NAME
+		} else if (params.BRANCH_NAME) {
+			git url: 'https://github.com/brucefrog/JettyWorld', branch: params.BRANCH_NAME
 		} else {
 			git url: 'https://github.com/brucefrog/JettyWorld'
 		}
@@ -33,9 +33,9 @@ node {
     		
     		// Transforming pom version number
     		def buildVersion
-    		if (env.BRANCH_NAME == 'master' || param.BRANCH_NAME == 'master') {
+    		if (env.BRANCH_NAME == 'master' || params.BRANCH_NAME == 'master') {
     			buildVersion = baseVersion + "." + env.BUILD_NUMBER
-    		} else if (env.BRANCH_NAME == 'snapshot' || param.BRANCH_NAME == 'snapshot') {
+    		} else if (env.BRANCH_NAME == 'snapshot' || params.BRANCH_NAME == 'snapshot') {
     			buildVersion = baseVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
     		} else {
     			buildVersion = baseVersion
