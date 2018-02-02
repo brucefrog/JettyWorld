@@ -135,7 +135,7 @@ node {
 			    // Mandatory parameters
 			    'buildName'          : buildInfo.name,
 			    'buildNumber'        : buildInfo.number,
-			    'targetRepo'         : 'libs-release-local',
+			    'targetRepo'         : 'release-promotion',
 			 
 			    // Optional parameters
 			    'comment'            : 'this is the promotion comment',
