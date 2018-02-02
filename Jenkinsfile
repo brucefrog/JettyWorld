@@ -4,12 +4,17 @@ node {
 	def artDocker = Artifactory.docker server: server, host: "tcp://localhost:2375"
 	def image = 'docker.artifactory.bruce/onboard/hello'
 	def buildImage = image + ":" + env.BUILD_NUMBER
-
-	def buildInfo
+	def baseVersion = "3.1"
+	def buildInfo = Artifactory.newBuildInfo()
 	
-	rtMaven.tool = 'Maven3.5.2'
-	rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
-    rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
+	buildInfo.env.capture = true
+	buildInfo.retention maxBuilds: 10
+	
+	if (env.BRANCH_NAME) {
+		// override build name to avoid xray not recognizing :: in build name
+		buildInfo.name = "${buildInfo.name.replace(':','-').replace(' ','')}"
+	}
+		
 	
     stage('Checkout') {
     		// Get some code from a GitHub repository
@@ -21,15 +26,32 @@ node {
 			git url: 'https://github.com/brucefrog/JettyWorld'
 		}
     }
-    stage('Java Build') {
-		// Setup Artifactory resolution
-        rtMaven.deployer.addProperty("MyProp","Hello")
-		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package'
-    		if (env.BRANCH_NAME) {
-    			buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
+    stage('Configure') {
+		rtMaven.tool = 'Maven3.5.2'
+		rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+	    rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
+    		
+    		// Transforming pom version number
+    		def buildVersion
+    		if (env.BRANCH_NAME == 'master' || param.BRANCH_NAME == 'master') {
+    			buildVersion = baseVersion + "." + env.BUILD_NUMBER
+    		} else if (env.BRANCH_NAME == 'snapshot' || param.BRANCH_NAME == 'snapshot') {
+    			buildVersion = baseVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
+    		} else {
+    			buildVersion = baseVersion
     		}
-		buildInfo.env.capture = true
-		buildInfo.retention maxBuilds: 10
+    		
+		def descriptor = Artifactory.mavenDescriptor()
+		descriptor.version = '1.x.y'
+		descriptor.pomFile = 'pom.xml'
+		descriptor.setVersion "bruce.jfrog:JettyParent", buildVersion
+		descriptor.transform()
+		descriptor.setVersion "bruce.jfrog:JettyWorld", buildVersion
+		descriptor.transform()
+    		
+    }
+    stage('Java Build') {
+		rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
     }
     stage('Unit Test') {
     		parallel apprun: {
@@ -60,14 +82,6 @@ node {
     			}
     		}
     }
-	stage('Deploy') {
-			def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'install'
-			buildInfo.append buildInfo5
-			
-			// rtMaven.deployer.deployArtifacts buildInfo5 
-			// buildInfo.append buildInfo5
-			// server.publishBuildInfo buildInfo5
-	}
     stage('Dockerize') {
     		dir("docker") {
 			def dockerImage = docker.build(buildImage)
@@ -90,7 +104,8 @@ node {
     }
     stage('Xray Scan') {
     		sh 'printenv'
-    		
+    		rtMaven.deployer.deployArtifacts buildInfo
+    		// buildInfo.append fullInfo 
 		  server.publishBuildInfo buildInfo
 		  
           def xrayConfig = [
@@ -111,7 +126,28 @@ node {
     }
     
     if (env.BRANCH_NAME == 'master') {
-    		echo 'master branch!!!'
+    		stage('Promotion') {
+	    		echo 'promoting master branch!!!'
+			def promotionConfig = [
+			    // Mandatory parameters
+			    'buildName'          : buildInfo.name,
+			    'buildNumber'        : buildInfo.number,
+			    'targetRepo'         : 'release-promotion',
+			 
+			    // Optional parameters
+			    'comment'            : 'this is the promotion comment',
+			    'sourceRepo'         : 'libs-release-local',
+			    'status'             : 'Released',
+			    'includeDependencies': true,
+			    'copy'               : true,
+			    // 'failFast' is true by default.
+			    // Set it to false, if you don't want the promotion to abort upon receiving the first error.
+			    'failFast'           : false
+			]
+			 
+			// Promote build
+			server.promote promotionConfig	    		
+    		}
     }
 
 }
