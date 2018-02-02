@@ -14,7 +14,6 @@ node {
 		// override build name to avoid xray not recognizing :: in build name
 		buildInfo.name = "${buildInfo.name.replace(':','-').replace(' ','')}"
 	}
-		
 	
     stage('Checkout') {
     		// Get some code from a GitHub repository
@@ -38,7 +37,7 @@ node {
     		} else if (env.BRANCH_NAME == 'snapshot' || params.BRANCH_NAME == 'snapshot') {
     			buildVersion = baseVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
     		} else {
-    			buildVersion = baseVersion
+    			buildVersion = baseVersion + "-UNKNOWN"
     		}
     		
 		def descriptor = Artifactory.mavenDescriptor()
