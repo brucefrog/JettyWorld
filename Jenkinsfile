@@ -40,10 +40,10 @@ node {
     			buildVersion = buildVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
     		}
     		
-		rtMaven.run pom: 'pom.xml', goals: 'clean package', buildInfo: buildInfo
     		if (env.BRANCH_NAME) {
     			buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
     		}
+		rtMaven.run pom: 'pom.xml', goals: 'clean package', buildInfo: buildInfo
 		buildInfo.env.capture = true
 		buildInfo.retention maxBuilds: 10
     }
