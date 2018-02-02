@@ -154,7 +154,7 @@ node {
 			    // Mandatory parameters
 			    'buildName'             : buildInfo.name,
 			    'buildNumber'           : buildInfo.number,
-			    'targetRepo'            : 'jars',
+			    'targetRepo'            : 'brucen-jfrog-repo',
 			        
 			    // Optional parameters
 			    'publish'               : true, // Default: true. If true, artifacts are published when deployed to Bintray.
