@@ -12,7 +12,7 @@ node {
 	
 	if (env.BRANCH_NAME) {
 		// override build name to avoid xray not recognizing :: in build name
-		buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
+		buildInfo.name = env.BUILD_TAG
 	}
 		
 	
@@ -38,7 +38,7 @@ node {
     		} else if (env.BRANCH_NAME == 'snapshot' || param.BRANCH_NAME == 'snapshot') {
     			buildVersion = baseVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
     		} else {
-    			buidlVersion = baseVersion
+    			buildVersion = baseVersion
     		}
 		def descriptor = Artifactory.mavenDescriptor()
 		descriptor.version = '1.x.y'
