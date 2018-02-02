@@ -12,7 +12,8 @@ node {
 	
 	if (env.BRANCH_NAME) {
 		// override build name to avoid xray not recognizing :: in build name
-		buildInfo.name = env.BUILD_TAG
+		buildInfo.name =~ s/[ :]/-/g
+		// env.BUILD_TAG
 	}
 		
 	
