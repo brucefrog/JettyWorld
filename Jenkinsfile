@@ -14,7 +14,6 @@ node {
 		// override build name to avoid xray not recognizing :: in build name
 		buildInfo.name = "${buildInfo.name.replace(':','-').replace(' ','')}"
 	}
-		
 	
     stage('Checkout') {
     		// Get some code from a GitHub repository
