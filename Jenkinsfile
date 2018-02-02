@@ -38,7 +38,7 @@ node {
     		} else if (env.BRANCH_NAME == 'snapshot' || params.BRANCH_NAME == 'snapshot') {
     			buildVersion = baseVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
     		} else {
-    			buildVersion = baseVersion
+    			buildVersion = baseVersion + "-UNKNOWN"
     		}
     		
 		def descriptor = Artifactory.mavenDescriptor()
