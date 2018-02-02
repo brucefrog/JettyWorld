@@ -2,9 +2,9 @@ node {
     def server = Artifactory.server 'ART8080GCP'
 	def rtMaven = Artifactory.newMavenBuild()
 	def artDocker = Artifactory.docker server: server, host: "tcp://localhost:2375"
-	def image = 'docker.artifactory.bruce/onboard/hello'
-	def buildImage = image + ":" + env.BUILD_NUMBER
 	def baseVersion = "3.1"
+    	def buildVersion
+    	def dockerTag = 'docker.artifactory.bruce/onboard/hello'
 	def buildInfo = Artifactory.newBuildInfo()
 	
 	buildInfo.env.capture = true
@@ -31,7 +31,6 @@ node {
 	    rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
     		
     		// Transforming pom version number
-    		def buildVersion
     		if (env.BRANCH_NAME == 'master' || params.BRANCH_NAME == 'master') {
     			buildVersion = baseVersion + "." + env.BUILD_NUMBER
     		} else if (env.BRANCH_NAME == 'snapshot' || params.BRANCH_NAME == 'snapshot') {
@@ -81,7 +80,9 @@ node {
     			}
     		}
     }
+    
     stage('Dockerize') {
+		buildImage = dockerTag + ":" + buildVersion
     		dir("docker") {
 			def dockerImage = docker.build(buildImage)
 			dockerImage.tag("latest")
@@ -146,6 +147,25 @@ node {
 			 
 			// Promote build
 			server.promote promotionConfig	    		
+    		}
+    		
+    		stage('Distribution') {
+			def distributionConfig = [
+			    // Mandatory parameters
+			    'buildName'             : buildInfo.name,
+			    'buildNumber'           : buildInfo.number,
+			    'targetRepo'            : 'dist-repo',
+			        
+			    // Optional parameters
+			    'publish'               : true, // Default: true. If true, artifacts are published when deployed to Bintray.
+			    'overrideExistingFiles' : false, // Default: false. If true, Artifactory overwrites builds already existing in the target path in Bintray.
+			    'gpgPassphrase'         : 'bruce onboarding', // If specified, Artifactory will GPG sign the build deployed to Bintray and apply the specified passphrase.
+			    'async'                 : false, // Default: false. If true, the build will be distributed asynchronously. Errors and warnings may be viewed in the Artifactory log.
+			    "sourceRepos"           : ["release-promotion"], // An array of local repositories from which build artifacts should be collected.
+			    'dryRun'                : true, // Default: false. If true, distribution is only simulated. No files are actually moved.
+			]
+			
+			server.distribute distributionConfig			
     		}
     }
 
