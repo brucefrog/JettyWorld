@@ -5,10 +5,10 @@ node {
 	def image = 'docker.artifactory.bruce/onboard/hello'
 	def buildImage = image + ":" + env.BUILD_NUMBER
 	def buildVersion = "3.1"
-	def buildInfo
+	def buildInfo = Artifactory.newBuildInfo()
 	
 	rtMaven.tool = 'Maven3.5.2'
-	rtMaven.resolver server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot'
+	rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
     rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
 	
     stage('Checkout') {
@@ -40,7 +40,7 @@ node {
     			buildVersion = buildVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
     		}
     		
-		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean package'
+		rtMaven.run pom: 'pom.xml', goals: 'clean package', buildInfo: buildInfo
     		if (env.BRANCH_NAME) {
     			buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
     		}
@@ -77,9 +77,9 @@ node {
     		}
     }
 	stage('Deploy') {
-		rtMaven.deployer.deployArtifacts = false
-		def buildInfo5 = rtMaven.run pom: 'pom.xml', goals: 'deploy'
-		buildInfo.append buildInfo5
+		// rtMaven.deployer.deployArtifacts = false
+		rtMaven.run pom: 'pom.xml', goals: 'install', buildInfo: buildInfo
+		// buildInfo.append buildInfo5
 		
 		// rtMaven.deployer.deployArtifacts buildInfo 
 		// buildInfo.append buildInfo5
@@ -107,7 +107,8 @@ node {
     }
     stage('Xray Scan') {
     		sh 'printenv'
-    		rtMaven.deployer.deployArtifacts buildInfo 
+    		rtMaven.deployer.deployArtifacts buildInfo
+    		// buildInfo.append fullInfo 
 		  server.publishBuildInfo buildInfo
 		  
           def xrayConfig = [
