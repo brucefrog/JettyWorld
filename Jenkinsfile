@@ -15,9 +15,6 @@ node {
 		buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
 	}
 		
-	rtMaven.tool = 'Maven3.5.2'
-	rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
-    rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
 	
     stage('Checkout') {
     		// Get some code from a GitHub repository
@@ -29,10 +26,10 @@ node {
 			git url: 'https://github.com/brucefrog/JettyWorld'
 		}
     }
-    stage('Java Build') {
-		// Setup Artifactory resolution
-		// rtMaven.deployer.deployArtifacts = false
-        // rtMaven.deployer.addProperty("MyProp","Hello")
+    stage('Configure') {
+		rtMaven.tool = 'Maven3.5.2'
+		rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+	    rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
     		
     		// Transforming pom version number
     		def buildVersion
@@ -51,7 +48,9 @@ node {
 		descriptor.setVersion "bruce.jfrog:JettyWorld", buildVersion
 		descriptor.transform()
     		
-		rtMaven.run pom: 'pom.xml', goals: 'clean package', buildInfo: buildInfo
+    }
+    stage('Java Build') {
+		rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
     }
     stage('Unit Test') {
     		parallel apprun: {
@@ -82,10 +81,6 @@ node {
     			}
     		}
     }
-	stage('Deploy') {
-		rtMaven.run pom: 'pom.xml', goals: 'install', buildInfo: buildInfo
-		
-	}
     stage('Dockerize') {
     		dir("docker") {
 			def dockerImage = docker.build(buildImage)
