@@ -33,9 +33,9 @@ node {
     		
     		// Transforming pom version number
     		def buildVersion
-    		if (env.BRANCH_NAME == 'master') {
+    		if (env.BRANCH_NAME == 'master' || param.BRANCH_NAME == 'master') {
     			buildVersion = baseVersion + "." + env.BUILD_NUMBER
-    		} else if (env.BRANCH_NAME == 'snapshot') {
+    		} else if (env.BRANCH_NAME == 'snapshot' || param.BRANCH_NAME == 'snapshot') {
     			buildVersion = baseVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
     		} else {
     			buidlVersion = baseVersion
