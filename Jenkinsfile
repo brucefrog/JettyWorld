@@ -7,6 +7,14 @@ node {
 	def buildVersion = "3.1"
 	def buildInfo = Artifactory.newBuildInfo()
 	
+	buildInfo.env.capture = true
+	buildInfo.retention maxBuilds: 10
+	
+	if (env.BRANCH_NAME) {
+		// override build name to avoid xray not recognizing :: in build name
+		buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
+	}
+		
 	rtMaven.tool = 'Maven3.5.2'
 	rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
     rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
@@ -23,9 +31,9 @@ node {
     }
     stage('Java Build') {
 		// Setup Artifactory resolution
-		rtMaven.deployer.deployArtifacts = false
-        rtMaven.deployer.addProperty("MyProp","Hello")
-        
+		// rtMaven.deployer.deployArtifacts = false
+        // rtMaven.deployer.addProperty("MyProp","Hello")
+    		
     		if (env.BRANCH_NAME == 'master') {
     			echo "attempting to transform version number"
     			buildVersion = buildVersion + "." + env.BUILD_NUMBER
@@ -40,12 +48,7 @@ node {
     			buildVersion = buildVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
     		}
     		
-    		if (env.BRANCH_NAME) {
-    			buildInfo.name = 'JettyWorld-' + env.BRANCH_NAME
-    		}
 		rtMaven.run pom: 'pom.xml', goals: 'clean package', buildInfo: buildInfo
-		buildInfo.env.capture = true
-		buildInfo.retention maxBuilds: 10
     }
     stage('Unit Test') {
     		parallel apprun: {
@@ -142,7 +145,7 @@ node {
 			    'sourceRepo'         : 'libs-release-local',
 			    'status'             : 'Released',
 			    'includeDependencies': true,
-			    'copy'               : false,
+			    'copy'               : true,
 			    // 'failFast' is true by default.
 			    // Set it to false, if you don't want the promotion to abort upon receiving the first error.
 			    'failFast'           : true
