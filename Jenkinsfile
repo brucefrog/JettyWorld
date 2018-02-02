@@ -154,7 +154,7 @@ node {
 			    // Mandatory parameters
 			    'buildName'             : buildInfo.name,
 			    'buildNumber'           : buildInfo.number,
-			    'targetRepo'            : 'distribution',
+			    'targetRepo'            : 'bintray',
 			        
 			    // Optional parameters
 			    'publish'               : true, // Default: true. If true, artifacts are published when deployed to Bintray.
@@ -162,7 +162,7 @@ node {
 			    'gpgPassphrase'         : 'bruce onboarding', // If specified, Artifactory will GPG sign the build deployed to Bintray and apply the specified passphrase.
 			    'async'                 : false, // Default: false. If true, the build will be distributed asynchronously. Errors and warnings may be viewed in the Artifactory log.
 			    "sourceRepos"           : ["release-promotion"], // An array of local repositories from which build artifacts should be collected.
-			    'dryRun'                : true, // Default: false. If true, distribution is only simulated. No files are actually moved.
+			    'dryRun'                : false, // Default: false. If true, distribution is only simulated. No files are actually moved.
 			]
 			
 			server.distribute distributionConfig			
