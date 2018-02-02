@@ -93,7 +93,7 @@ node {
 		}
     }
     stage('Verify') {
-        sh 'docker rmi ' + image
+        sh 'docker rmi ' + dockerTag
         sh 'docker rmi ' + buildImage
 
     		docker.image(buildImage).withRun('-p 6800:6800') {c ->
