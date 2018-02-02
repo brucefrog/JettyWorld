@@ -4,7 +4,7 @@ node {
 	def artDocker = Artifactory.docker server: server, host: "tcp://localhost:2375"
 	def image = 'docker.artifactory.bruce/onboard/hello'
 	def buildImage = image + ":" + env.BUILD_NUMBER
-	def buildVersion = "3.1"
+	def baseVersion = "3.1"
 	def buildInfo = Artifactory.newBuildInfo()
 	
 	buildInfo.env.capture = true
@@ -34,19 +34,22 @@ node {
 		// rtMaven.deployer.deployArtifacts = false
         // rtMaven.deployer.addProperty("MyProp","Hello")
     		
+    		// Transforming pom version number
+    		def buildVersion
     		if (env.BRANCH_NAME == 'master') {
-    			echo "attempting to transform version number"
-    			buildVersion = buildVersion + "." + env.BUILD_NUMBER
-			def descriptor = Artifactory.mavenDescriptor()
-			descriptor.version = '1.x.y'
-			descriptor.pomFile = 'pom.xml'
-    			descriptor.setVersion "bruce.jfrog:JettyParent", buildVersion
-    			descriptor.transform()
-    			descriptor.setVersion "bruce.jfrog:JettyWorld", buildVersion
-    			descriptor.transform()
+    			buildVersion = baseVersion + "." + env.BUILD_NUMBER
     		} else if (env.BRANCH_NAME == 'snapshot') {
-    			buildVersion = buildVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
+    			buildVersion = baseVersion + "." + env.BUILD_NUMBER + "-SNAPSHOT"
+    		} else {
+    			buidlVersion = baseVersion
     		}
+		def descriptor = Artifactory.mavenDescriptor()
+		descriptor.version = '1.x.y'
+		descriptor.pomFile = 'pom.xml'
+		descriptor.setVersion "bruce.jfrog:JettyParent", buildVersion
+		descriptor.transform()
+		descriptor.setVersion "bruce.jfrog:JettyWorld", buildVersion
+		descriptor.transform()
     		
 		rtMaven.run pom: 'pom.xml', goals: 'clean package', buildInfo: buildInfo
     }
@@ -80,13 +83,8 @@ node {
     		}
     }
 	stage('Deploy') {
-		// rtMaven.deployer.deployArtifacts = false
 		rtMaven.run pom: 'pom.xml', goals: 'install', buildInfo: buildInfo
-		// buildInfo.append buildInfo5
 		
-		// rtMaven.deployer.deployArtifacts buildInfo 
-		// buildInfo.append buildInfo5
-		// server.publishBuildInfo buildInfo5
 	}
     stage('Dockerize') {
     		dir("docker") {
