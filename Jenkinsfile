@@ -150,7 +150,7 @@ node {
     		}
     		
     		stage('Distribution') {
-			def distributionConfig = [
+			def jarDistCfg = [
 			    // Mandatory parameters
 			    'buildName'             : buildInfo.name,
 			    'buildNumber'           : buildInfo.number,
@@ -161,11 +161,28 @@ node {
 			    'overrideExistingFiles' : false, // Default: false. If true, Artifactory overwrites builds already existing in the target path in Bintray.
 			    'gpgPassphrase'         : 'bruce onboarding', // If specified, Artifactory will GPG sign the build deployed to Bintray and apply the specified passphrase.
 			    'async'                 : false, // Default: false. If true, the build will be distributed asynchronously. Errors and warnings may be viewed in the Artifactory log.
-			    "sourceRepos"           : ["release-promotion","docker-local"], // An array of local repositories from which build artifacts should be collected.
+			    "sourceRepos"           : ["release-promotion"], // An array of local repositories from which build artifacts should be collected.
 			    'dryRun'                : false, // Default: false. If true, distribution is only simulated. No files are actually moved.
 			]
 			
-			server.distribute distributionConfig			
+			server.distribute jarDistCfg			
+
+			def dkrDistCfg = [
+			    // Mandatory parameters
+			    'buildName'             : buildInfo.name,
+			    'buildNumber'           : buildInfo.number,
+			    'targetRepo'            : 'bintray', 
+			        
+			    // Optional parameters
+			    'publish'               : true, // Default: true. If true, artifacts are published when deployed to Bintray.
+			    'overrideExistingFiles' : false, // Default: false. If true, Artifactory overwrites builds already existing in the target path in Bintray.
+			    'gpgPassphrase'         : 'bruce onboarding', // If specified, Artifactory will GPG sign the build deployed to Bintray and apply the specified passphrase.
+			    'async'                 : false, // Default: false. If true, the build will be distributed asynchronously. Errors and warnings may be viewed in the Artifactory log.
+			    "sourceRepos"           : ["docker-local"], // An array of local repositories from which build artifacts should be collected.
+			    'dryRun'                : false, // Default: false. If true, distribution is only simulated. No files are actually moved.
+			]
+			
+			server.distribute dkrDistCfg			
     		}
     }
 
