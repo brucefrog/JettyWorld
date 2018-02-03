@@ -4,7 +4,7 @@ node {
 	def artDocker = Artifactory.docker server: server, host: "tcp://localhost:2375"
 	def baseVersion = "3.1"
     	def buildVersion
-    	def dockerTag = 'docker.artifactory.bruce/onboard/hello'
+    	def dockerTag = 'docker-local.artifactory.bruce/onboard/hello'
 	def buildInfo = Artifactory.newBuildInfo()
 	
 	buildInfo.env.capture = true
