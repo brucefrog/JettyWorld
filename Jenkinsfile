@@ -183,7 +183,9 @@ node {
 			]
 			
 			try {
-			server.distribute dkrDistCfg
+			  server.distribute dkrDistCfg
+			} catch (error) {
+				echo "Publishing docker still choking."
 			}			
     		}
     }
