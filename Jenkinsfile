@@ -182,7 +182,9 @@ node {
 			    'dryRun'                : false, // Default: false. If true, distribution is only simulated. No files are actually moved.
 			]
 			
-			server.distribute dkrDistCfg			
+			try {
+			server.distribute dkrDistCfg
+			}			
     		}
     }
 
