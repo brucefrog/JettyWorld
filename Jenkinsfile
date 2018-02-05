@@ -175,7 +175,7 @@ node {
 			        
 			    // Optional parameters
 			    'publish'               : true, // Default: true. If true, artifacts are published when deployed to Bintray.
-			    'overrideExistingFiles' : false, // Default: false. If true, Artifactory overwrites builds already existing in the target path in Bintray.
+			    'overrideExistingFiles' : true, // Default: false. If true, Artifactory overwrites builds already existing in the target path in Bintray.
 			    'gpgPassphrase'         : 'bruce onboarding', // If specified, Artifactory will GPG sign the build deployed to Bintray and apply the specified passphrase.
 			    'async'                 : false, // Default: false. If true, the build will be distributed asynchronously. Errors and warnings may be viewed in the Artifactory log.
 			    "sourceRepos"           : ["docker-local"], // An array of local repositories from which build artifacts should be collected.
