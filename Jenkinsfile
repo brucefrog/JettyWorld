@@ -85,15 +85,15 @@ node {
 		buildImage = dockerTag + ":" + buildVersion
     		dir("docker") {
 			def dockerImage = docker.build(buildImage)
-			dockerImage.tag("latest")
+			// dockerImage.tag("latest")
 			def dockInfo = artDocker.push buildImage, 'docker', buildInfo 
 			// dockerImage.push("latest")
-			artDocker.push dockerTag+":latest", 'docker'
+			// artDocker.push dockerTag+":latest", 'docker'
 			// buildInfo.append dockerInfo
 		}
     }
     stage('Verify') {
-        sh 'docker rmi ' + dockerTag
+        // sh 'docker rmi ' + dockerTag
         sh 'docker rmi ' + buildImage
 
     		docker.image(buildImage).withRun('-p 6800:6800') {c ->
