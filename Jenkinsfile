@@ -86,7 +86,7 @@ node {
     		dir("docker") {
 			def dockerImage = docker.build(buildImage)
 			// dockerImage.tag("latest")
-			def dockInfo = artDocker.push buildImage, 'docker', buildInfo 
+			def dockInfo = artDocker.push buildImage, 'docker-local', buildInfo 
 			// dockerImage.push("latest")
 			// artDocker.push dockerTag+":latest", 'docker'
 			// buildInfo.append dockerInfo
